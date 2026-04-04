@@ -16,10 +16,11 @@ export default function Footer() {
           {/* Company Info */}
           <div className="lg:col-span-1">
             <div className="flex items-center mb-4">
-              <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">E</span>
-              </div>
-              <span className="ml-3 text-xl font-bold">Gupta Distributors</span>
+              <img 
+                src="/Logo.jpg" 
+                alt="Gupta Distributors Logo" 
+                className="h-10 w-auto"
+              />
             </div>
             <p className="text-gray-400 mb-4 text-sm leading-relaxed">
               India&apos;s premier electronics e-commerce platform offering the latest gadgets, smartphones, laptops, and tech accessories.

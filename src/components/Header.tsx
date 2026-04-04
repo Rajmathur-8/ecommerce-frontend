@@ -192,10 +192,11 @@ export default function Header() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
-              <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">E</span>
-              </div>
-              <span className="ml-2 text-xl font-bold text-gray-900">Gupta Distributors</span>
+              <img 
+                src="/Logo.jpg" 
+                alt="Gupta Distributors Logo" 
+                className="h-12 w-auto"
+              />
             </Link>
           </div>
 

@@ -150,6 +150,17 @@ export default function ProductCard({ id, productName, price, discountPrice, ima
         >
           <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-current' : ''}`} />
         </button>
+
+        {/* Status Badges */}
+        {isPreOrder ? (
+          <div className="absolute bottom-2 left-3 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded flex items-center gap-1 shadow-lg">
+            🚀 Coming Soon
+          </div>
+        ) : totalReviews && totalReviews > 500 ? (
+          <div className="absolute bottom-2 left-3 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded shadow-lg">
+            ✓ Best Seller
+          </div>
+        ) : null}
       </div>
 
       {/* Product Info */}
@@ -163,47 +174,68 @@ export default function ProductCard({ id, productName, price, discountPrice, ima
 
         {/* Product Name */}
         <Link href={getProductUrlWithFilters(id)}>
-          <h3 className="text-base font-bold text-neutral-900 hover:text-indigo-600 transition-colors line-clamp-2 leading-snug">
+          <h3 className="text-sm font-bold text-neutral-900 hover:text-indigo-600 transition-colors line-clamp-2 leading-snug">
             {productName}
           </h3>
         </Link>
 
-        {/* Rating */}
+        {/* Rating & Reviews */}
         <div className="flex items-center gap-2 py-1">
           <div className="flex items-center gap-0.5">
             {renderStars(averageRating || 0)}
           </div>
           {totalReviews && totalReviews > 0 ? (
-            <span className="text-xs text-gray-600 font-medium">({totalReviews})</span>
+            <div className="flex items-center gap-1">
+              <span className="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">
+                ★★★★★
+              </span>
+              <span className="text-xs text-gray-600 font-medium">{totalReviews}+ bought</span>
+            </div>
           ) : (
                 null
           )}
         </div>
 
-        {/* Price or Coming Soon */}
+        {/* Price Section */}
         {isPreOrder ? (
-          <div className="flex items-center gap-2 pt-2">
-            <span className="text-sm font-bold text-red-600 bg-red-50 px-3 py-1.5 rounded-lg">
-              🚀 Coming Soon
-            </span>
+          <div className="flex items-center gap-2 pt-1">
+            <span className="text-xs font-bold text-gray-600">Price Coming Soon</span>
           </div>
         ) : (
-          <div className="flex items-center gap-3 pt-2">
-            <span className="text-2xl font-bold text-neutral-900">
-              {formatCurrency(Math.round(discountPrice || price))}
-            </span>
-            {discountPrice && (
-              <span className="text-sm text-gray-400 line-through font-medium">{formatCurrency(Math.round(price))}</span>
+          <div className="space-y-1.5 pt-1">
+            <div className="flex items-center gap-2">
+              <span className="text-xl font-bold text-neutral-900">
+                {formatCurrency(Math.round(discountPrice || price))}
+              </span>
+              {discountPrice && (
+                <span className="text-xs text-gray-400 line-through font-medium">{formatCurrency(Math.round(price))}</span>
+              )}
+            </div>
+            {discount > 0 && (
+              <div className="text-xs font-bold text-green-600">
+                Save {formatCurrency(price - (discountPrice || price))}
+              </div>
             )}
           </div>
         )}
 
-        {/* Stock Status */}
-        {stock > 0 && stock < 10 && !isPreOrder && (
-          <div className="text-xs font-semibold text-orange-600 bg-orange-50 px-2.5 py-1 rounded">
-            ⏰ Only {stock} left!
-          </div>
-        )}
+        {/* Trust & Offers */}
+        <div className="space-y-1.5 pt-2 border-t border-gray-100">
+          {/* Stock Status */}
+          {stock > 0 && stock < 10 && !isPreOrder && (
+            <div className="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded inline-block">
+              ⚡ Only {stock} left!
+            </div>
+          )}
+          
+          {/* EMI & Offers */}
+          {!isPreOrder && (
+            <div className="text-xs text-gray-600 flex items-center gap-1">
+              <span className="text-green-600 font-semibold">✓</span>
+              <span>No Cost EMI Available</span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

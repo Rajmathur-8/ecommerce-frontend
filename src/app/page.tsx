@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import ProductCard from '@/components/ProductCard';
 import CategoryCarousel from '@/components/CategoryCarousel';
 import BannerCarousel from '@/components/BannerCarousel';
+import BrandShowcase from '@/components/BrandShowcase';
+import StatisticsSection from '@/components/StatisticsSection';
 import { getApiUrl } from '@/lib/config';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -444,6 +446,12 @@ export default function Home() {
             )}
           </div>
         </section>
+
+        {/* Brand Showcase Section */}
+        <BrandShowcase />
+
+        {/* Statistics Section */}
+        <StatisticsSection />
       </main>
 
       {/* Pre-Order Modal */}
