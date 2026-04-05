@@ -221,3 +221,105 @@ input:focus, textarea:focus, select:focus {
 .bg-danger-light {
   background-color: #fee2e2;
 }
+
+/* Professional Slider Styles */
+input[type='range'] {
+  width: 100%;
+  height: 8px;
+  border-radius: 5px;
+  background: linear-gradient(to right, #e2e8f0 0%, #e2e8f0 100%);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  cursor: pointer;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.4);
+  transition: all 0.2s ease;
+}
+
+input[type='range']::-webkit-slider-thumb:hover {
+  width: 24px;
+  height: 24px;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.6);
+}
+
+input[type='range']::-webkit-slider-thumb:active {
+  box-shadow: 0 2px 16px rgba(249, 115, 22, 0.8);
+}
+
+/* Firefox */
+input[type='range']::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  cursor: pointer;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.4);
+  transition: all 0.2s ease;
+}
+
+input[type='range']::-moz-range-thumb:hover {
+  width: 24px;
+  height: 24px;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.6);
+}
+
+input[type='range']::-moz-range-thumb:active {
+  box-shadow: 0 2px 16px rgba(249, 115, 22, 0.8);
+}
+
+input[type='range']::-moz-range-track {
+  background: transparent;
+  border: none;
+}
+
+/* Track styling for better appearance */
+input[type='range']::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, #e2e8f0 0%, #e2e8f0 100%);
+  height: 8px;
+  border-radius: 5px;
+}
+
+input[type='range']::-moz-range-track {
+  background: linear-gradient(to right, #e2e8f0 0%, #e2e8f0 100%);
+  height: 8px;
+  border-radius: 5px;
+  border: none;
+}
+
+/* Focus state for accessibility */
+input[type='range']:focus {
+  outline: 2px solid #f97316;
+  outline-offset: 2px;
+}
+
+/* Slider with accent color (orange for price) */
+.slider {
+  accent-color: #f97316;
+}
+
+/* RC Slider Default Styling */
+.price-slider-wrapper {
+  padding: 0;
+  position: relative;
+}
+
+.price-slider-wrapper .rc-slider-track {
+  background-color: #000000;
+}
+
+.price-slider-wrapper .rc-slider-handle {
+  background-color: #000000;
+  border-color: #ffffff;
+}

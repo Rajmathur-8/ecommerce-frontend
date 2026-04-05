@@ -9,10 +9,11 @@ export const useProducts = (params?: {
   minPrice?: number;
   maxPrice?: number;
   brand?: string;
+  brands?: string[];
   sort?: 'price_asc' | 'price_desc' | 'name_asc' | 'name_desc' | 'rating_desc' | 'newest' | 'ram_asc' | 'ram_desc' | 'rom_asc' | 'rom_desc' | 'battery_asc' | 'battery_desc';
   inStock?: boolean;
-  ram?: string;
-  rom?: string;
+  ram?: string | string[];
+  rom?: string | string[];
   battery?: string;
   processor?: string;
   camera?: string;
@@ -28,7 +29,15 @@ export const useProducts = (params?: {
     try {
       setLoading(true);
       setError(null);
-      const response = await apiService.products.getAll(params);
+      // Convert brands array to comma-separated string for API
+      const apiParams = params ? {
+        ...params,
+        brand: params.brands && params.brands.length > 0 ? params.brands.join(',') : params.brand,
+        brands: undefined,
+        ram: Array.isArray(params.ram) && params.ram.length > 0 ? params.ram.join(',') : params.ram,
+        rom: Array.isArray(params.rom) && params.rom.length > 0 ? params.rom.join(',') : params.rom
+      } : params;
+      const response = await apiService.products.getAll(apiParams);
       if (response.success && response.data) {
         setProducts(response.data.data || response.data);
         setPagination(response.data.pagination);

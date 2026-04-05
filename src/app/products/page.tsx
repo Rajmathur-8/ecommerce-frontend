@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useProducts } from '@/hooks/useProducts';
 import { apiService } from '@/lib/api';
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
 
 import ProductCard from '@/components/ProductCard';
 import { ProductCardSkeleton } from '@/components/Skeleton';
@@ -11,6 +13,7 @@ import { ProductCardSkeleton } from '@/components/Skeleton';
 export default function ProductsPage() {
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get('category') || '';
+  const brandFromUrl = searchParams.get('brand') || '';
 
   const [filters, setFilters] = useState({
     page: 1,
@@ -19,12 +22,12 @@ export default function ProductsPage() {
     search: '',
     minPrice: undefined as number | undefined,
     maxPrice: undefined as number | undefined,
-    brand: '',
+    brands: [] as string[],
     sort: 'newest' as const,
     inStock: false,
     // Mobile/Electronics specific filters
-    ram: '',
-    rom: '',
+    ram: [] as string[],
+    rom: [] as string[],
     battery: '',
     processor: '',
     camera: '',
@@ -51,6 +54,21 @@ export default function ProductsPage() {
       return prev;
     });
   }, [categoryFromUrl]);
+
+  // Update brand filter when URL parameter changes
+  useEffect(() => {
+    setFilters(prev => {
+      const brandList = brandFromUrl ? [brandFromUrl] : [];
+      if (JSON.stringify(prev.brands) !== JSON.stringify(brandList)) {
+        return {
+          ...prev,
+          brands: brandList,
+          page: 1
+        };
+      }
+      return prev;
+    });
+  }, [brandFromUrl]);
 
   // Fetch categories
   useEffect(() => {
@@ -284,153 +302,174 @@ export default function ProductsPage() {
     setFilters(prev => ({ ...prev, page }));
   };
 
+  const [expandedFilters, setExpandedFilters] = useState<{[key: string]: boolean}>({
+    search: true,
+    sort: true,
+    price: true,
+    brand: true,
+    stock: false
+  });
+
+  const toggleFilterSection = (section: string) => {
+    setExpandedFilters(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+
+  const handleResetFilters = () => {
+    setFilters({
+      page: 1,
+      limit: 12,
+      category: categoryFromUrl,
+      search: '',
+      minPrice: undefined,
+      maxPrice: undefined,
+      brands: [],
+      sort: 'newest',
+      inStock: false,
+      ram: [],
+      rom: [],
+      battery: '',
+      processor: '',
+      camera: '',
+      resolution: '',
+      screenSize: ''
+    });
+  };
+
   const handleSearch = (searchTerm: string) => {
     handleFilterChange('search', searchTerm);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Enhanced Filters Sidebar */}
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Professional Filters Sidebar */}
           <div className="lg:w-1/4">
-            <div className="bg-white rounded-lg shadow-sm overflow-hidden sticky top-8">
-              {/* Filter Header */}
-              <div className="bg-indigo-600 px-6 py-4">
-                <h2 className="text-xl font-bold text-white flex items-center">
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                  </svg>
-                  Filters
-                </h2>
+            <div className="bg-white rounded-xl overflow-hidden sticky top-8 border border-slate-200 shadow-lg">
+              {/* Clean Header */}
+              <div className="bg-white px-6 py-5 border-b border-slate-200">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-base font-bold text-slate-900">Filters</h3>
+                  {(filters.search || filters.minPrice || filters.maxPrice || filters.brands.length > 0 || filters.inStock) && (
+                    <button
+                      onClick={handleResetFilters}
+                      className="text-xs font-semibold text-blue-600 hover:text-blue-700 underline decoration-dotted underline-offset-2 transition-colors duration-200"
+                    >
+                      Clear All
+                    </button>
+                  )}
+                </div>
               </div>
 
-              <div className="p-6 space-y-6">
-                {/* Search */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-800 mb-3">
-                    Search Products
-                  </label>
-                  <div className="relative">
+              <div className="p-6 space-y-5 max-h-[calc(100vh-200px)] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-50">
+                {/* Search Input */}
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wide">Search</label>
+                  <div className="relative group">
+                    <svg className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
                     <input
                       type="text"
                       value={filters.search}
                       onChange={(e) => handleSearch(e.target.value)}
-                      placeholder="What are you looking for?"
-                      className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 text-gray-900 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200"
+                      placeholder="Type here..."
+                      className="w-full pl-10 pr-4 py-2.5 text-sm text-slate-900 bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:bg-white focus:border-blue-400 focus:ring-1 focus:ring-blue-300 transition-all duration-200 placeholder-slate-500"
                     />
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
-                    </div>
                   </div>
                 </div>
 
-                {/* Sort */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-800 mb-3">
-                    Sort By
-                  </label>
-                  <div className="relative">
+                {/* Sort Option */}
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wide">Sort</label>
+                  <div className="relative group">
                     <select
                       value={filters.sort}
                       onChange={(e) => handleFilterChange('sort', e.target.value)}
-                      className="w-full appearance-none bg-white px-4 py-3 text-gray-900 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 cursor-pointer"
+                      className="w-full px-4 py-2.5 text-sm text-slate-900 bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:bg-white focus:border-blue-400 focus:ring-1 focus:ring-blue-300 transition-all duration-200 appearance-none cursor-pointer"
                     >
-                      <option value="newest">Newest First</option>
-                      <option value="price_asc">Price: Low to High</option>
-                      <option value="price_desc">Price: High to Low</option>
-                      <option value="name_asc">Name: A to Z</option>
-                      <option value="name_desc">Name: Z to A</option>
-                      <option value="rating_desc">Highest Rated</option>
-                      {getCategorySortingOptions()}
+                      <option value="newest">Newest</option>
+                      <option value="price_asc">Low to High</option>
+                      <option value="price_desc">High to Low</option>
+                      <option value="rating_desc">Most Rated</option>
                     </select>
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                      <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                      </svg>
-                    </div>
+                    <svg className="absolute right-3 top-3.5 h-4 w-4 text-slate-400 pointer-events-none" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
                   </div>
+                </div>
+
+                {/* Divider */}
+                <div className="pt-1">
+                  <div className="h-px bg-gradient-to-r from-slate-100 via-slate-300 to-slate-100" />
                 </div>
 
                 {/* Price Range */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-800 mb-3">
-                    Price Range
-                  </label>
-                  <div className="bg-gray-50 p-4 rounded-lg border-2 border-gray-100">
-                    <div className="flex items-center space-x-3 mb-3">
-                      <div className="flex-1">
-                        <label className="block text-xs font-medium text-gray-600 mb-1">Minimum</label>
-                        <div className="relative">
-                          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">₹</span>
-                          <input
-                            type="number"
-                            min="0"
-                            step="1"
-                            value={filters.minPrice || ''}
-                            onChange={(e) => handleFilterChange('minPrice', e.target.value ? parseFloat(e.target.value) : undefined)}
-                            placeholder="0"
-                            className="w-full pl-8 pr-3 py-2.5 text-gray-900 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200"
-                          />
-                        </div>
+                <div className="space-y-2.5">
+                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wide">Price</label>
+                  <div className="bg-gray-100 p-5 rounded-lg border border-gray-200">
+                    <div className="flex gap-2.5 mb-4">
+                      <div className="flex-1 bg-white p-3 rounded-lg border border-gray-200 text-center">
+                        <div className="text-xs text-slate-600 font-semibold mb-1">Min</div>
+                        <div className="text-lg font-bold text-slate-900">₹{filters.minPrice ? (filters.minPrice).toLocaleString('en-IN') : '0'}</div>
                       </div>
-                      <div className="text-gray-400 font-bold text-lg pt-6">—</div>
-                      <div className="flex-1">
-                        <label className="block text-xs font-medium text-gray-600 mb-1">Maximum</label>
-                        <div className="relative">
-                          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">₹</span>
-                          <input
-                            type="number"
-                            min="0"
-                            step="1"
-                            value={filters.maxPrice || ''}
-                            onChange={(e) => handleFilterChange('maxPrice', e.target.value ? parseFloat(e.target.value) : undefined)}
-                            placeholder="∞"
-                            className="w-full pl-8 pr-3 py-2.5 text-gray-900 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200"
-                          />
-                        </div>
+                      <div className="flex-1 bg-white p-3 rounded-lg border border-gray-200 text-center">
+                        <div className="text-xs text-slate-600 font-semibold mb-1">Max</div>
+                        <div className="text-lg font-bold text-slate-900">₹{filters.maxPrice ? (filters.maxPrice).toLocaleString('en-IN') : '2L'}</div>
                       </div>
                     </div>
-                    {(filters.minPrice || filters.maxPrice) && (
-                      <div className="text-xs text-indigo-600 bg-indigo-50 px-3 py-2 rounded-md border border-indigo-200">
-                        <span className="font-medium">Range:</span> ₹{filters.minPrice || 0} - ₹{filters.maxPrice || '∞'}
-                      </div>
-                    )}
+                    <div className="price-slider-wrapper mt-5">
+                      <Slider
+                        range
+                        allowCross={false}
+                        pushable={5000}
+                        min={0}
+                        max={200000}
+                        step={5000}
+                        value={[filters.minPrice || 0, filters.maxPrice || 200000]}
+                        onChange={(values) => {
+                          const [min, max] = Array.isArray(values) ? values : [values, 200000];
+                          handleFilterChange('minPrice', min);
+                          handleFilterChange('maxPrice', max);
+                        }}
+                      />
+                    </div>
+                    <div className="flex justify-between text-xs text-slate-600 font-medium mt-3">
+                      <span>₹0</span>
+                      <span>₹2L</span>
+                    </div>
                   </div>
                 </div>
 
-                {/* Brand */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-800 mb-3">
-                    Brand
-                  </label>
-                  <div className="relative">
-                    <select
-                      value={filters.brand}
-                      onChange={(e) => handleFilterChange('brand', e.target.value)}
-                      className="w-full appearance-none bg-white px-4 py-3 text-gray-900 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 cursor-pointer"
-                      disabled={loading && availableBrands.length === 0}
-                    >
-                      <option value="">All Brands</option>
-                      {availableBrands.length > 0 ? (
-                        availableBrands.map((brand) => (
-                          <option key={brand} value={brand}>
+                {/* Brand Selection */}
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold text-slate-800 uppercase tracking-wide">Brand</label>
+                  <div className="space-y-2.5">
+                    {availableBrands.length > 0 ? (
+                      availableBrands.map((brand) => (
+                        <label key={brand} className="flex items-center gap-3 cursor-pointer group">
+                          <input
+                            type="checkbox"
+                            checked={filters.brands.includes(brand)}
+                            onChange={(e) => {
+                              const updatedBrands = e.target.checked
+                                ? [...filters.brands, brand]
+                                : filters.brands.filter(b => b !== brand);
+                              handleFilterChange('brands', updatedBrands);
+                            }}
+                            className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                          />
+                          <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">
                             {brand}
-                          </option>
-                        ))
-                      ) : filters.category ? (
-                        <option value="" disabled>Loading brands...</option>
-                      ) : (
-                        <option value="" disabled>Select a category to see brands</option>
-                      )}
-                    </select>
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                      <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                      </svg>
-                    </div>
+                          </span>
+                        </label>
+                      ))
+                    ) : (
+                      <p className="text-sm text-slate-500">No brands available</p>
+                    )}
                   </div>
                 </div>
 
@@ -445,40 +484,46 @@ export default function ProductsPage() {
                           <label className="block text-sm font-semibold text-gray-800 mb-3">
                             RAM (GB)
                           </label>
-                          <div className="relative">
-                            <select
-                              value={filters.ram}
-                              onChange={(e) => handleFilterChange('ram', e.target.value)}
-                              className="w-full appearance-none bg-white px-4 py-3 text-gray-900 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 cursor-pointer"
-                            >
-                              <option value="">All RAM</option>
-                              {isMobileCategory || isTabletCategory ? (
-                                <>
-                                  <option value="2">2 GB</option>
-                                  <option value="3">3 GB</option>
-                                  <option value="4">4 GB</option>
-                                  <option value="6">6 GB</option>
-                                  <option value="8">8 GB</option>
-                                  <option value="12">12 GB</option>
-                                  <option value="16">16 GB</option>
-                                  <option value="32">32 GB</option>
-                                </>
-                              ) : (
-                                <>
-                                  <option value="4">4 GB</option>
-                                  <option value="8">8 GB</option>
-                                  <option value="12">12 GB</option>
-                                  <option value="16">16 GB</option>
-                                  <option value="32">32 GB</option>
-                                  <option value="64">64 GB</option>
-                                </>
-                              )}
-                            </select>
-                            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                              <svg className="w-5 h-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                              </svg>
-                            </div>
+                          <div className="space-y-2.5">
+                            {isMobileCategory || isTabletCategory ? (
+                              <>
+                                {['2', '3', '4', '6', '8', '12', '16', '32'].map((value) => (
+                                  <label key={value} className="flex items-center gap-3 cursor-pointer group">
+                                    <input
+                                      type="checkbox"
+                                      checked={filters.ram.includes(value)}
+                                      onChange={(e) => {
+                                        const updatedRam = e.target.checked
+                                          ? [...filters.ram, value]
+                                          : filters.ram.filter(r => r !== value);
+                                        handleFilterChange('ram', updatedRam);
+                                      }}
+                                      className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                    />
+                                    <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{value} GB</span>
+                                  </label>
+                                ))}
+                              </>
+                            ) : (
+                              <>
+                                {['4', '8', '12', '16', '32', '64'].map((value) => (
+                                  <label key={value} className="flex items-center gap-3 cursor-pointer group">
+                                    <input
+                                      type="checkbox"
+                                      checked={filters.ram.includes(value)}
+                                      onChange={(e) => {
+                                        const updatedRam = e.target.checked
+                                          ? [...filters.ram, value]
+                                          : filters.ram.filter(r => r !== value);
+                                        handleFilterChange('ram', updatedRam);
+                                      }}
+                                      className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                    />
+                                    <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{value} GB</span>
+                                  </label>
+                                ))}
+                              </>
+                            )}
                           </div>
                         </div>
 
@@ -487,38 +532,48 @@ export default function ProductsPage() {
                           <label className="block text-sm font-semibold text-gray-800 mb-3">
                             Storage (GB)
                           </label>
-                          <div className="relative">
-                            <select
-                              value={filters.rom}
-                              onChange={(e) => handleFilterChange('rom', e.target.value)}
-                              className="w-full appearance-none bg-white px-4 py-3 text-gray-900 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 cursor-pointer"
-                            >
-                              <option value="">All Storage</option>
-                              {isMobileCategory || isTabletCategory ? (
-                                <>
-                                  <option value="16">16 GB</option>
-                                  <option value="32">32 GB</option>
-                                  <option value="64">64 GB</option>
-                                  <option value="128">128 GB</option>
-                                  <option value="256">256 GB</option>
-                                  <option value="512">512 GB</option>
-                                  <option value="1024">1 TB</option>
-                                </>
-                              ) : (
-                                <>
-                                  <option value="128">128 GB</option>
-                                  <option value="256">256 GB</option>
-                                  <option value="512">512 GB</option>
-                                  <option value="1024">1 TB</option>
-                                  <option value="2048">2 TB</option>
-                                </>
-                              )}
-                            </select>
-                            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                              <svg className="w-5 h-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                              </svg>
-                            </div>
+                          <div className="space-y-2.5">
+                            {isMobileCategory || isTabletCategory ? (
+                              <>
+                                {['16', '32', '64', '128', '256', '512', '1024'].map((value) => (
+                                  <label key={value} className="flex items-center gap-3 cursor-pointer group">
+                                    <input
+                                      type="checkbox"
+                                      checked={filters.rom.includes(value)}
+                                      onChange={(e) => {
+                                        const updatedRom = e.target.checked
+                                          ? [...filters.rom, value]
+                                          : filters.rom.filter(r => r !== value);
+                                        handleFilterChange('rom', updatedRom);
+                                      }}
+                                      className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                    />
+                                    <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{value === '1024' ? '1 TB' : `${value} GB`}</span>
+                                  </label>
+                                ))}
+                              </>
+                            ) : (
+                              <>
+                                {['128', '256', '512', '1024', '2048'].map((value) => (
+                                  <label key={value} className="flex items-center gap-3 cursor-pointer group">
+                                    <input
+                                      type="checkbox"
+                                      checked={filters.rom.includes(value)}
+                                      onChange={(e) => {
+                                        const updatedRom = e.target.checked
+                                          ? [...filters.rom, value]
+                                          : filters.rom.filter(r => r !== value);
+                                        handleFilterChange('rom', updatedRom);
+                                      }}
+                                      className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                    />
+                                    <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">
+                                      {value === '1024' ? '1 TB' : value === '2048' ? '2 TB' : `${value} GB`}
+                                    </span>
+                                  </label>
+                                ))}
+                              </>
+                            )}
                           </div>
                         </div>
 
@@ -585,27 +640,23 @@ export default function ProductsPage() {
                           <label className="block text-sm font-semibold text-gray-800 mb-3">
                             RAM (GB)
                           </label>
-                          <div className="relative">
-                            <select
-                              value={filters.ram}
-                              onChange={(e) => handleFilterChange('ram', e.target.value)}
-                              className="w-full appearance-none bg-white px-4 py-3 text-gray-900 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 cursor-pointer"
-                            >
-                              <option value="">All RAM</option>
-                              <option value="2">2 GB</option>
-                              <option value="3">3 GB</option>
-                              <option value="4">4 GB</option>
-                              <option value="6">6 GB</option>
-                              <option value="8">8 GB</option>
-                              <option value="12">12 GB</option>
-                              <option value="16">16 GB</option>
-                              <option value="32">32 GB</option>
-                            </select>
-                            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                              <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                              </svg>
-                            </div>
+                          <div className="space-y-2.5">
+                            {['2', '3', '4', '6', '8', '12', '16', '32'].map((value) => (
+                              <label key={value} className="flex items-center gap-3 cursor-pointer group">
+                                <input
+                                  type="checkbox"
+                                  checked={filters.ram.includes(value)}
+                                  onChange={(e) => {
+                                    const updatedRam = e.target.checked
+                                      ? [...filters.ram, value]
+                                      : filters.ram.filter(r => r !== value);
+                                    handleFilterChange('ram', updatedRam);
+                                  }}
+                                  className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                />
+                                <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{value} GB</span>
+                              </label>
+                            ))}
                           </div>
                         </div>
 
@@ -614,26 +665,23 @@ export default function ProductsPage() {
                           <label className="block text-sm font-semibold text-gray-800 mb-3">
                             Storage (GB)
                           </label>
-                          <div className="relative">
-                            <select
-                              value={filters.rom}
-                              onChange={(e) => handleFilterChange('rom', e.target.value)}
-                              className="w-full appearance-none bg-white px-4 py-3 text-gray-900 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 cursor-pointer"
-                            >
-                              <option value="">All Storage</option>
-                              <option value="16">16 GB</option>
-                              <option value="32">32 GB</option>
-                              <option value="64">64 GB</option>
-                              <option value="128">128 GB</option>
-                              <option value="256">256 GB</option>
-                              <option value="512">512 GB</option>
-                              <option value="1024">1 TB</option>
-                            </select>
-                            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                              <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                              </svg>
-                            </div>
+                          <div className="space-y-2.5">
+                            {['16', '32', '64', '128', '256', '512', '1024'].map((value) => (
+                              <label key={value} className="flex items-center gap-3 cursor-pointer group">
+                                <input
+                                  type="checkbox"
+                                  checked={filters.rom.includes(value)}
+                                  onChange={(e) => {
+                                    const updatedRom = e.target.checked
+                                      ? [...filters.rom, value]
+                                      : filters.rom.filter(r => r !== value);
+                                    handleFilterChange('rom', updatedRom);
+                                  }}
+                                  className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                />
+                                <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{value === '1024' ? '1 TB' : `${value} GB`}</span>
+                              </label>
+                            ))}
                           </div>
                         </div>
 
@@ -743,25 +791,23 @@ export default function ProductsPage() {
                           <label className="block text-sm font-semibold text-gray-800 mb-3">
                             RAM (GB)
                           </label>
-                          <div className="relative">
-                            <select
-                              value={filters.ram}
-                              onChange={(e) => handleFilterChange('ram', e.target.value)}
-                              className="w-full appearance-none bg-white px-4 py-3 text-gray-900 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 cursor-pointer"
-                            >
-                              <option value="">All RAM</option>
-                              <option value="4">4 GB</option>
-                              <option value="8">8 GB</option>
-                              <option value="12">12 GB</option>
-                              <option value="16">16 GB</option>
-                              <option value="32">32 GB</option>
-                              <option value="64">64 GB</option>
-                            </select>
-                            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                              <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                              </svg>
-                            </div>
+                          <div className="space-y-2.5">
+                            {['4', '8', '12', '16', '32', '64'].map((value) => (
+                              <label key={value} className="flex items-center gap-3 cursor-pointer group">
+                                <input
+                                  type="checkbox"
+                                  checked={filters.ram.includes(value)}
+                                  onChange={(e) => {
+                                    const updatedRam = e.target.checked
+                                      ? [...filters.ram, value]
+                                      : filters.ram.filter(r => r !== value);
+                                    handleFilterChange('ram', updatedRam);
+                                  }}
+                                  className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                />
+                                <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{value} GB</span>
+                              </label>
+                            ))}
                           </div>
                         </div>
 
@@ -770,24 +816,25 @@ export default function ProductsPage() {
                           <label className="block text-sm font-semibold text-gray-800 mb-3">
                             Storage (GB)
                           </label>
-                          <div className="relative">
-                            <select
-                              value={filters.rom}
-                              onChange={(e) => handleFilterChange('rom', e.target.value)}
-                              className="w-full appearance-none bg-white px-4 py-3 text-gray-900 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 cursor-pointer"
-                            >
-                              <option value="">All Storage</option>
-                              <option value="128">128 GB</option>
-                              <option value="256">256 GB</option>
-                              <option value="512">512 GB</option>
-                              <option value="1024">1 TB</option>
-                              <option value="2048">2 TB</option>
-                            </select>
-                            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                              <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                              </svg>
-                            </div>
+                          <div className="space-y-2.5">
+                            {['128', '256', '512', '1024', '2048'].map((value) => (
+                              <label key={value} className="flex items-center gap-3 cursor-pointer group">
+                                <input
+                                  type="checkbox"
+                                  checked={filters.rom.includes(value)}
+                                  onChange={(e) => {
+                                    const updatedRom = e.target.checked
+                                      ? [...filters.rom, value]
+                                      : filters.rom.filter(r => r !== value);
+                                    handleFilterChange('rom', updatedRom);
+                                  }}
+                                  className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                />
+                                <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">
+                                  {value === '1024' ? '1 TB' : value === '2048' ? '2 TB' : `${value} GB`}
+                                </span>
+                              </label>
+                            ))}
                           </div>
                         </div>
 
@@ -935,45 +982,65 @@ export default function ProductsPage() {
                           <label className="block text-sm font-semibold text-gray-800 mb-3">
                             {isWashingMachineCategory ? 'Capacity (kg)' : isRefrigeratorCategory ? 'Capacity (Liters)' : 'Tonnage'}
                           </label>
-                          <div className="relative">
-                            <select
-                              value={filters.rom}
-                              onChange={(e) => handleFilterChange('rom', e.target.value)}
-                              className="w-full appearance-none bg-white px-4 py-3 text-gray-900 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-200 cursor-pointer"
-                            >
-                              <option value="">All Capacities</option>
-                              {isWashingMachineCategory ? (
-                                <>
-                                  <option value="6">6 kg</option>
-                                  <option value="7">7 kg</option>
-                                  <option value="8">8 kg</option>
-                                  <option value="9">9 kg</option>
-                                  <option value="10">10 kg</option>
-                                  <option value="12">12 kg+</option>
-                                </>
-                              ) : isRefrigeratorCategory ? (
-                                <>
-                                  <option value="150">150 L</option>
-                                  <option value="200">200 L</option>
-                                  <option value="250">250 L</option>
-                                  <option value="300">300 L</option>
-                                  <option value="400">400 L+</option>
-                                </>
-                              ) : (
-                                <>
-                                  <option value="1">1 Ton</option>
-                                  <option value="1.5">1.5 Ton</option>
-                                  <option value="2">2 Ton</option>
-                                  <option value="2.5">2.5 Ton</option>
-                                  <option value="3">3 Ton+</option>
-                                </>
-                              )}
-                            </select>
-                            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                              <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                              </svg>
-                            </div>
+                          <div className="space-y-2.5">
+                            {isWashingMachineCategory ? (
+                              <>
+                                {['6', '7', '8', '9', '10', '12'].map((value) => (
+                                  <label key={value} className="flex items-center gap-3 cursor-pointer group">
+                                    <input
+                                      type="checkbox"
+                                      checked={filters.rom.includes(value)}
+                                      onChange={(e) => {
+                                        const updatedRom = e.target.checked
+                                          ? [...filters.rom, value]
+                                          : filters.rom.filter(r => r !== value);
+                                        handleFilterChange('rom', updatedRom);
+                                      }}
+                                      className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                    />
+                                    <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{value} kg{value === '12' ? '+' : ''}</span>
+                                  </label>
+                                ))}
+                              </>
+                            ) : isRefrigeratorCategory ? (
+                              <>
+                                {['150', '200', '250', '300', '400'].map((value) => (
+                                  <label key={value} className="flex items-center gap-3 cursor-pointer group">
+                                    <input
+                                      type="checkbox"
+                                      checked={filters.rom.includes(value)}
+                                      onChange={(e) => {
+                                        const updatedRom = e.target.checked
+                                          ? [...filters.rom, value]
+                                          : filters.rom.filter(r => r !== value);
+                                        handleFilterChange('rom', updatedRom);
+                                      }}
+                                      className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                    />
+                                    <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{value} L{value === '400' ? '+' : ''}</span>
+                                  </label>
+                                ))}
+                              </>
+                            ) : (
+                              <>
+                                {['1', '1.5', '2', '2.5', '3'].map((value) => (
+                                  <label key={value} className="flex items-center gap-3 cursor-pointer group">
+                                    <input
+                                      type="checkbox"
+                                      checked={filters.rom.includes(value)}
+                                      onChange={(e) => {
+                                        const updatedRom = e.target.checked
+                                          ? [...filters.rom, value]
+                                          : filters.rom.filter(r => r !== value);
+                                        handleFilterChange('rom', updatedRom);
+                                      }}
+                                      className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                    />
+                                    <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{value} Ton{value === '3' ? '+' : ''}</span>
+                                  </label>
+                                ))}
+                              </>
+                            )}
                           </div>
                         </div>
                       </>
@@ -1751,20 +1818,23 @@ export default function ProductsPage() {
                   </>
                 )}
 
-                {/* In Stock Filter */}
-                <div>
-                  <label className="flex items-center space-x-3 cursor-pointer">
+                {/* Divider */}
+                <div className="pt-1">
+                  <div className="h-px bg-gradient-to-r from-slate-100 via-slate-300 to-slate-100" />
+                </div>
+
+                {/* Stock Filter */}
+                <div className="space-y-2">
+                  <label className="flex items-center gap-2.5 cursor-pointer p-2.5 rounded-lg hover:bg-slate-50 transition-colors duration-200">
                     <input
                       type="checkbox"
                       checked={filters.inStock}
                       onChange={(e) => handleFilterChange('inStock', e.target.checked)}
-                      className="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 focus:ring-2"
+                      className="w-4 h-4 accent-green-600 cursor-pointer"
                     />
-                    <span className="text-sm font-semibold text-gray-800">In Stock Only</span>
+                    <span className="text-sm font-medium text-slate-700">In Stock Only</span>
                   </label>
                 </div>
-
-
               </div>
             </div>
           </div>
