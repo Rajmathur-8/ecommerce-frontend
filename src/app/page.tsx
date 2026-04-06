@@ -35,6 +35,24 @@ export default function Home() {
   const { categories, loading: categoriesLoading } = useCategories();
   const router=useRouter()
   
+  // Deduplicate categories like "Mobile" and "Mobiles" 
+  const getDedupedCategories = () => {
+    const seen = new Set<string>();
+    const deduped: typeof categories = [];
+    
+    categories.forEach(category => {
+      // Normalize by removing trailing 's' and converting to lowercase
+      const normalized = category.name.toLowerCase().trim().replace(/s$/, '');
+      
+      if (!seen.has(normalized)) {
+        seen.add(normalized);
+        deduped.push(category);
+      }
+    });
+    
+    return deduped;
+  };
+  
   // Category products state
   const [categoryProducts, setCategoryProducts] = useState<CategoryProducts>({});
   const [categoryProductsLoading, setCategoryProductsLoading] = useState(true);
@@ -112,18 +130,47 @@ export default function Home() {
       try {
         const results: CategoryProducts = {};
         
-        // Fetch products for each category
-        const promises = categories.map(async (category) => {
+        // Get deduped categories
+        const deduped = getDedupedCategories();
+        
+        // Fetch products for each deduped category
+        const promises = deduped.map(async (dedupedCategory) => {
           try {
-            const response = await fetch(
-              getApiUrl(`/web/products?category=${category._id}&limit=4`)
-            );
-            const data = await response.json();
-            if (data.success && Array.isArray(data.data)) {
-              results[category._id] = data.data;
+            // Normalize the category name to find similar variations
+            const normalized = dedupedCategory.name.toLowerCase().trim().replace(/s$/, '');
+            
+            // Find all categories that match this normalized name
+            const matchingCategories = categories.filter(cat => {
+              const catNormalized = cat.name.toLowerCase().trim().replace(/s$/, '');
+              return catNormalized === normalized;
+            });
+            
+            // Fetch products from all matching categories and combine them
+            const allProducts: any[] = [];
+            
+            for (const matchingCat of matchingCategories) {
+              try {
+                const response = await fetch(
+                  getApiUrl(`/web/products?category=${matchingCat._id}&limit=4`)
+                );
+                const data = await response.json();
+                if (data.success && Array.isArray(data.data)) {
+                  allProducts.push(...data.data);
+                }
+              } catch (error) {
+                console.error(`Error fetching products for category ${matchingCat._id}:`, error);
+              }
             }
+            
+            // Deduplicate products by ID and limit to 4
+            const uniqueProducts = Array.from(
+              new Map(allProducts.map(p => [p._id, p])).values()
+            ).slice(0, 4);
+            
+            results[dedupedCategory._id] = uniqueProducts;
           } catch (error) {
-            results[category._id] = [];
+            console.error(`Error processing category ${dedupedCategory._id}:`, error);
+            results[dedupedCategory._id] = [];
           }
         });
 
@@ -346,7 +393,7 @@ export default function Home() {
 
         {/* Category Carousel Section */}
         <CategoryCarousel
-          categories={categories}
+          categories={getDedupedCategories()}
           onCategoryClick={handleCategoryClick}
           activeCategory={null}
           loading={categoriesLoading}

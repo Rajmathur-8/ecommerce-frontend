@@ -18,6 +18,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Gupta Distributors - Premium Electronics & Appliances Online Store",
   description: "Shop premium electronics, smartphones, laptops, appliances & gadgets with exclusive offers, fast delivery & EMI options. Trusted by 10M+ customers across 1000+ cities.",
+  icons: {
+    icon: '/logo.png',
+    apple: '/logo.png',
+  },
 };
 
 export default function RootLayout({
