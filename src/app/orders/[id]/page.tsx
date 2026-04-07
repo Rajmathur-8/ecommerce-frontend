@@ -155,7 +155,7 @@ export default function OrderDetailsPage() {
       case 'pending':
         return <Clock className="w-5 h-5 text-yellow-500" />;
       case 'confirmed':
-        return <CheckCircle className="w-5 h-5 text-blue-500" />;
+        return <CheckCircle className="w-5 h-5 text-red-500" />;
       case 'shipped':
         return <Truck className="w-5 h-5 text-purple-500" />;
       case 'delivered':
@@ -172,7 +172,7 @@ export default function OrderDetailsPage() {
       case 'pending':
         return 'bg-yellow-100 text-yellow-800';
       case 'confirmed':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-red-100 text-red-800';
       case 'shipped':
         return 'bg-purple-100 text-purple-800';
       case 'delivered':
@@ -277,7 +277,7 @@ export default function OrderDetailsPage() {
             <p className="text-gray-600 mb-6">{error || 'The order you are looking for does not exist.'}</p>
             <button
               onClick={() => router.push('/orders')}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
             >
               <ArrowLeft className="w-4 h-4 text-gray-800" />
               Back to Orders
@@ -640,7 +640,7 @@ export default function OrderDetailsPage() {
                           console.log('- User authenticated:', apiService.hasToken());
                           router.push(`/orders/${order._id}/review`);
                         }}
-                        className="inline-flex items-center gap-3 px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                        className="inline-flex items-center gap-3 px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
                       >
                         <MessageSquare className="w-5 h-5" />
                         Write a Review
@@ -923,7 +923,7 @@ export default function OrderDetailsPage() {
                 
                 <button 
                   onClick={() => router.push('/products')}
-                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors font-medium"
+                  className="flex-1 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors font-medium"
                 >
                   Continue Shopping
                 </button>

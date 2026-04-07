@@ -6,8 +6,10 @@ import { useEffect, useState } from 'react';
 import ProductCard from '@/components/ProductCard';
 import CategoryCarousel from '@/components/CategoryCarousel';
 import BannerCarousel from '@/components/BannerCarousel';
+import BankOffersCarousel from '@/components/BankOffersCarousel';
 import BrandShowcase from '@/components/BrandShowcase';
-import StatisticsSection from '@/components/StatisticsSection';
+import FeaturedCategoriesGrid from '@/components/FeaturedCategoriesGrid';
+import ThemedDealSection from '@/components/ThemedDealSection';
 import { getApiUrl } from '@/lib/config';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
@@ -378,7 +380,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <main>
         {/* Banner Carousel Section */}
         {bannersLoading ? (
@@ -391,114 +393,110 @@ export default function Home() {
           />
         )}
 
-        {/* Category Carousel Section */}
-        <CategoryCarousel
+        {/* Bank Offers Carousel Section */}
+        <BankOffersCarousel />
+
+        {/* Featured Categories Grid - Explore Category Section */}
+        <FeaturedCategoriesGrid
           categories={getDedupedCategories()}
           onCategoryClick={handleCategoryClick}
-          activeCategory={null}
           loading={categoriesLoading}
         />
 
-        {/* Special Offers Section */}
-        <section className="py-12 bg-gradient-to-r from-indigo-50 to-purple-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-10">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Special Offers</h2>
+        {/* Themed Deal Sections - Products organized by category */}
+        {categoryProductsLoading ? (
+          <section className="py-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              {[...Array(3)].map((_, index) => (
+                <CategorySectionSkeleton key={index} />
+              ))}
             </div>
-            {offersLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {[...Array(3)].map((_, index) => (
-                  <SpecialOfferSkeleton key={index} />
-                ))}
+          </section>
+        ) : (
+          getDedupedCategories().map((category, index) => {
+            const products = categoryProducts[category._id] || [];
+            const backgroundOptions: ('white' | 'light' | 'gradient')[] = ['white', 'light', 'gradient'];
+            const bgColor = backgroundOptions[index % 3];
+            
+            return (
+              <ThemedDealSection
+                key={category._id}
+                title={`Best Of ${category.name}`}
+                description={`Explore our collection of ${category.name.toLowerCase()}`}
+                products={products}
+                categoryTags={[category.name]}
+                categoryId={category._id}
+                backgroundColor={bgColor}
+                loading={categoryProductsLoading}
+              />
+            );
+          })
+        )}
+
+        {/* Special Offers / Exclusive Deals & Offers Section */}
+        {specialOffers.length > 0 && (
+          <section className="py-12 bg-gray-50">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+                <div>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                    Exclusive Deals & Offers
+                  </h2>
+                  <p className="text-gray-600 text-sm sm:text-base mt-1">
+                    Enhance your lifestyle with amazing offers
+                  </p>
+                </div>
+                {specialOffers.length > 3 && (
+                  <a
+                    href="/special-offers"
+                    className="inline-flex items-center px-6 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 hover:!text-black transition-colors whitespace-nowrap"
+                  >
+                    View All
+                  </a>
+                )}
               </div>
-            ) : specialOffers.length === 0 ? (
-              <div className="text-center py-8 text-gray-400">No special offers available</div>
-            ) : (
-              <>
+
+              {offersLoading ? (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {[...Array(3)].map((_, index) => (
+                    <SpecialOfferSkeleton key={index} />
+                  ))}
+                </div>
+              ) : (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   {specialOffers.slice(0, 3).map(offer => (
-                    <div key={offer._id} className="bg-white rounded-lg shadow p-4 flex flex-col">
-                      <img src={offer.image || '/no-image.png'} alt={offer.code} className="w-full h-40 object-cover rounded mb-4" />
-                      <h3 className="text-xl font-semibold text-gray-900 mb-2 ">{offer.code}</h3>
-                      <p className="text-gray-600  mb-2">{offer.description}</p>
-                      <div className="flex  gap-2 mb-2">
-                        <span className="inline-block px-2 py-1 text-xs rounded bg-indigo-100 text-indigo-700 font-semibold">
-                          {offer.type === 'percentage' ? `${offer.value}% OFF` : `₹${offer.value} OFF`}
+                    <div key={offer._id} className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow p-4 flex flex-col h-full">
+                      <img
+                        src={offer.image || '/no-image.png'}
+                        alt={offer.code}
+                        className="w-full h-40 object-cover rounded mb-4"
+                      />
+                      <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+                        {offer.code}
+                      </h3>
+                      <p className="text-gray-600 text-sm mb-3 flex-grow">
+                        {offer.description}
+                      </p>
+                      <div className="flex gap-2 mb-3">
+                        <span className="inline-block px-3 py-1 text-xs sm:text-sm rounded-full bg-red-100 text-red-700 font-semibold">
+                          {offer.type === 'percentage' ? `${offer.value}% OFF` : `?${offer.value} OFF`}
                         </span>
                       </div>
                       {offer.validUntil && (
-                        <div className="text-xs text-gray-500">Valid until: {new Date(offer.validUntil).toLocaleDateString()}</div>
+                        <div className="text-xs text-gray-500">
+                          Valid until: {new Date(offer.validUntil).toLocaleDateString()}
+                        </div>
                       )}
                     </div>
                   ))}
                 </div>
-                {specialOffers.length > 3 && (
-                  <div className="flex justify-center mt-6">
-                    <a href="/special-offers" className="px-6 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition">View More</a>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        </section>
-
-        {/* Products Section */}
-        <section className="py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {categoryProductsLoading ? (
-              // Show skeleton for all categories while loading
-              [...Array(3)].map((_, index) => (
-                <CategorySectionSkeleton key={index} />
-              ))
-            ) : (
-              categories.map((category) => {
-                const products = categoryProducts[category._id] || [];
-                return (
-                  <div key={category._id} className="mb-12 sm:mb-16">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 gap-2 sm:gap-4">
-                      <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{category.name}</h2>
-                      {products.length > 0 && (
-                        <a
-                          href={`/products?category=${category._id}`}
-                          className="inline-block px-4 sm:px-6 py-2 bg-indigo-600 text-white font-medium rounded hover:bg-indigo-700 transition-colors text-sm sm:text-base"
-                        >
-                          View All
-                        </a>
-                      )}
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-4">
-                      {products.length > 0 ? (
-                        products.map(product => (
-                          <ProductCard
-                            key={product._id}
-                            id={product._id}
-                            productName={product.productName}
-                            price={product.price}
-                            stock={product.stock}
-                            discountPrice={product.discountPrice}
-                            images={product.images}
-                            category={product.category}
-                            averageRating={product.averageRating}
-                            totalReviews={product.totalReviews}
-                            isPreOrder={product.isPreOrder}
-                          />
-                        ))
-                      ) : (
-                        <div className="col-span-1 sm:col-span-2 md:col-span-4 text-gray-400 text-center text-sm sm:text-base">No products found</div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </section>
+              )}
+            </div>
+          </section>
+        )}
 
         {/* Brand Showcase Section */}
         <BrandShowcase />
-
-        {/* Statistics Section */}
-        <StatisticsSection />
       </main>
 
       {/* Pre-Order Modal */}
@@ -527,7 +525,7 @@ export default function Home() {
                   className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
                     formErrors.name 
                       ? 'border-red-500 focus:ring-red-500' 
-                      : 'border-gray-300 focus:ring-blue-500'
+                      : 'border-gray-300 focus:ring-red-500'
                   }`}
                   placeholder="Your name"
                   required
@@ -555,7 +553,7 @@ export default function Home() {
                       className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
                         formErrors.email 
                           ? 'border-red-500 focus:ring-red-500' 
-                          : 'border-gray-300 focus:ring-blue-500'
+                          : 'border-gray-300 focus:ring-red-500'
                       }`}
                       placeholder="your@email.com"
                       required
@@ -569,7 +567,6 @@ export default function Home() {
                       type="tel"
                       value={preOrderFormData.phone}
                       onChange={(e) => {
-                        // Only allow digits
                         const digitsOnly = e.target.value.replace(/\D/g, '');
                         if (digitsOnly.length <= 10) {
                           setPreOrderFormData({ ...preOrderFormData, phone: digitsOnly });
@@ -581,7 +578,7 @@ export default function Home() {
                       className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
                         formErrors.phone 
                           ? 'border-red-500 focus:ring-red-500' 
-                          : 'border-gray-300 focus:ring-blue-500'
+                          : 'border-gray-300 focus:ring-red-500'
                       }`}
                       placeholder="1234567890"
                       maxLength={10}
@@ -601,7 +598,7 @@ export default function Home() {
                 <textarea
                   value={preOrderFormData.address}
                   onChange={(e) => setPreOrderFormData({ ...preOrderFormData, address: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                   placeholder="Your address (optional)"
                   rows={3}
                 />
@@ -619,10 +616,10 @@ export default function Home() {
                         setPreOrderFormData({ ...preOrderFormData, quantity: preOrderFormData.quantity - 1 });
                       }
                     }}
-                    className="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={preOrderFormData.quantity <= 1}
                   >
-                    <span className="text-lg font-semibold">−</span>
+                    <span className="text-lg font-semibold">-</span>
                   </button>
                   <input
                     type="number"
@@ -632,7 +629,7 @@ export default function Home() {
                       const value = parseInt(e.target.value) || 1;
                       setPreOrderFormData({ ...preOrderFormData, quantity: Math.max(1, value) });
                     }}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-center"
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-center"
                     required
                   />
                   <button
@@ -640,7 +637,7 @@ export default function Home() {
                     onClick={() => {
                       setPreOrderFormData({ ...preOrderFormData, quantity: preOrderFormData.quantity + 1 });
                     }}
-                    className="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500"
                   >
                     <span className="text-lg font-semibold">+</span>
                   </button>
@@ -662,7 +659,7 @@ export default function Home() {
               </button>
               <button
                 onClick={handlePreOrderSubmit}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors"
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors"
               >
                 Register Pre-Order
               </button>
@@ -674,3 +671,6 @@ export default function Home() {
     </div>
   );
 }
+
+
+

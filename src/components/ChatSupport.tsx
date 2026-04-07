@@ -123,7 +123,7 @@ export default function ChatSupport({ onClose }: ChatSupportProps) {
   if (showContactForm) {
     return (
       <div className="flex flex-col h-full">
-        <div className="bg-blue-600 text-white p-4 flex items-center justify-between">
+        <div className="bg-red-600 text-white p-4 flex items-center justify-between">
           <h3 className="text-lg font-semibold flex items-center gap-2">
             <HelpCircle className="w-5 h-5" />
             Contact Support
@@ -148,7 +148,7 @@ export default function ChatSupport({ onClose }: ChatSupportProps) {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="bg-blue-600 text-white p-4 flex items-center justify-between">
+      <div className="bg-red-600 text-white p-4 flex items-center justify-between">
         <h3 className="text-lg font-semibold flex items-center gap-2">
           <MessageSquare className="w-5 h-5" />
           Chat Support
@@ -181,7 +181,7 @@ export default function ChatSupport({ onClose }: ChatSupportProps) {
                     ref={isLastUserQuestion ? lastUserQuestionRef : null}
                     className={`max-w-[80%] rounded-lg p-3 ${
                       chat.type === 'user'
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-red-600 text-white'
                         : 'bg-white text-gray-800 shadow'
                     }`}
                   >
@@ -197,7 +197,7 @@ export default function ChatSupport({ onClose }: ChatSupportProps) {
                         <button
                           key={`${faq.question}-${shownFAQIndex}-${faqIndex}`}
                           onClick={() => handleFAQClick(faq)}
-                          className="w-full text-left p-3 bg-white border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-colors cursor-pointer"
+                          className="w-full text-left p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-blue-300 transition-colors cursor-pointer"
                         >
                           <p className="text-sm font-medium text-gray-800">{faq.question}</p>
                         </button>
@@ -224,7 +224,7 @@ export default function ChatSupport({ onClose }: ChatSupportProps) {
                 placeholder="Search for help..."
                 value={searchQuery}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
               />
             </div>
           </div>
@@ -240,7 +240,7 @@ export default function ChatSupport({ onClose }: ChatSupportProps) {
                   <button
                     key={index}
                     onClick={() => handleFAQClick(faq)}
-                    className="w-full text-left p-3 bg-white border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-colors cursor-pointer"
+                    className="w-full text-left p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-blue-300 transition-colors cursor-pointer"
                   >
                     <p className="text-sm font-medium text-gray-800">{faq.question}</p>
                   </button>
@@ -258,7 +258,7 @@ export default function ChatSupport({ onClose }: ChatSupportProps) {
         {chatHistory.length === 0 ? (
           <button
             onClick={handleContactClick}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full bg-red-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
           >
             <MessageSquare className="w-4 h-4" />
             Still need help? Contact us
@@ -277,7 +277,7 @@ export default function ChatSupport({ onClose }: ChatSupportProps) {
             </button>
             <button
               onClick={handleContactClick}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors cursor-pointer"
+              className="flex-1 bg-red-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors cursor-pointer"
             >
               Contact Support
             </button>
@@ -287,4 +287,6 @@ export default function ChatSupport({ onClose }: ChatSupportProps) {
     </div>
   );
 }
+
+
 

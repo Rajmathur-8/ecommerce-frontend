@@ -160,7 +160,7 @@ export default function LoginPage() {
                   type="text"
                   autoComplete="username"
                   required
-                  className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm"
                   placeholder="Enter your email or phone number"
                   value={formData.identifier}
                   onChange={handleChange}
@@ -176,7 +176,7 @@ export default function LoginPage() {
                   type="password"
                   autoComplete="current-password"
                   required
-                  className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                  className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm"
                   placeholder="Enter your password"
                   value={formData.password}
                   onChange={handleChange}
@@ -184,7 +184,7 @@ export default function LoginPage() {
               </div>
             </div>
             <div className="flex justify-end mb-4">
-              <Link href="/auth/forgot-password" className="text-sm text-indigo-600 hover:text-indigo-500 font-medium">
+              <Link href="/auth/forgot-password" className="text-sm text-gray-700 hover:text-black font-medium">
                 Forgot your password?
               </Link>
             </div>
@@ -195,7 +195,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <div className="flex items-center">
@@ -215,7 +215,7 @@ export default function LoginPage() {
                 type="button"
                 onClick={handleGoogleSignIn}
                 disabled={googleLoading}
-                className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {googleLoading ? (
                   <div className="flex items-center">
@@ -236,7 +236,7 @@ export default function LoginPage() {
                 type="button"
                 onClick={handleGuestSignIn}
                 disabled={guestLoading}
-                className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {guestLoading ? (
                   <div className="flex items-center">
@@ -258,7 +258,7 @@ export default function LoginPage() {
             </div>
             <div className="flex justify-between items-center mt-6">
               <span className="text-sm text-gray-600">New User?</span>
-              <Link href="/auth/register" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">Create an account</Link>
+              <Link href="/auth/register" className="text-sm font-medium text-gray-700 hover:text-black">Create an account</Link>
             </div>
           </form>
         </div>
@@ -266,3 +266,4 @@ export default function LoginPage() {
     </div>
   );
 } 
+

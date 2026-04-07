@@ -99,7 +99,7 @@ export default function ContactForm({ onSubmit, onCancel }: ContactFormProps) {
             value={formData.name}
             onChange={handleChange}
             required
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
             placeholder="Your name"
           />
         </div>
@@ -117,7 +117,7 @@ export default function ContactForm({ onSubmit, onCancel }: ContactFormProps) {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
             placeholder="your@email.com"
           />
         </div>
@@ -134,7 +134,7 @@ export default function ContactForm({ onSubmit, onCancel }: ContactFormProps) {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
             placeholder="+1234567890"
           />
         </div>
@@ -148,7 +148,7 @@ export default function ContactForm({ onSubmit, onCancel }: ContactFormProps) {
           name="subject"
           value={formData.subject}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
         >
           <option value="General Inquiry">General Inquiry</option>
           <option value="Order Related">Order Related</option>
@@ -168,7 +168,7 @@ export default function ContactForm({ onSubmit, onCancel }: ContactFormProps) {
           name="type"
           value={formData.type}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
         >
           <option value="general">General</option>
           <option value="product">Product</option>
@@ -192,7 +192,7 @@ export default function ContactForm({ onSubmit, onCancel }: ContactFormProps) {
             onChange={handleChange}
             required
             rows={4}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
             placeholder="Please describe your enquiry..."
           />
         </div>
@@ -211,7 +211,7 @@ export default function ContactForm({ onSubmit, onCancel }: ContactFormProps) {
         <button
           type="submit"
           disabled={loading}
-          className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+          className="flex-1 bg-red-600 hover:bg-blue-700 disabled:bg-blue-400 text-white py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
         >
           {loading ? (
             'Submitting...'
@@ -226,4 +226,6 @@ export default function ContactForm({ onSubmit, onCancel }: ContactFormProps) {
     </form>
   );
 }
+
+
 

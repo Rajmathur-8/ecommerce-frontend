@@ -14,7 +14,7 @@ const CATEGORY_PRODUCT_IMAGES: Record<string, string> = {
   'TV': 'https://d2d22nphq0yz8t.cloudfront.net/88e6cc4b-eaa3-4748-9a64-c764a2179d76/https___cdn.shopify.com_s_files_1_0604_5298_2732_products_SSA_IMG_HERO_55_CU7700_2_1500x1500_crop_center.progressive.jpg?width=1500&height=1500&quality=96&crop=center',
   'Laptops': 'https://m.media-amazon.com/images/I/71jG+e7roXL._SY450_.jpg',
   'Mobile': 'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400',
-  'Tablets': 'https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?auto=compress&cs=tinysrgb&w=400',
+  'Tablets': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnvuj23Sj_yqZmWnw8hMmnLdjxoQiNQQHuCw&sauto=compress&cs=tinysrgb&w=400',
 };
 
 interface CategoryCarouselProps {
@@ -86,9 +86,10 @@ export default function CategoryCarousel({
   const totalSlides = Math.ceil(categories.length / 6);
 
   return (
-    <section className="py-8 bg-white">
+    <section className="py-8 bg-red-50 border-t-4 border-red-500">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
+        <div className="mb-8 flex items-center gap-3">
+          <span className="inline-block bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">IMPORTANT</span>
           <h2 className="text-2xl font-bold text-gray-900 text-left">Explore Category</h2>
         </div>
 
@@ -102,14 +103,14 @@ export default function CategoryCarousel({
             <>
               <button
                 onClick={prevSlide}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white border-2 border-gray-200 rounded-full p-3 shadow-lg hover:shadow-xl hover:border-indigo-300 transition-all duration-200 hover:scale-110"
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white border-2 border-gray-200 rounded-full p-3 shadow-lg hover:shadow-xl hover:border-red-500 transition-all duration-200 hover:scale-110"
                 aria-label="Previous categories"
               >
                 <ChevronLeft className="w-6 h-6 text-gray-600" />
               </button>
               <button
                 onClick={nextSlide}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white border-2 border-gray-200 rounded-full p-3 shadow-lg hover:shadow-xl hover:border-indigo-300 transition-all duration-200 hover:scale-110"
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white border-2 border-gray-200 rounded-full p-3 shadow-lg hover:shadow-xl hover:border-red-500 transition-all duration-200 hover:scale-110"
                 aria-label="Next categories"
               >
                 <ChevronRight className="w-6 h-6 text-gray-600" />
@@ -117,57 +118,54 @@ export default function CategoryCarousel({
             </>
           )}
 
-          {/* Categories Grid */}
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-6 md:gap-8">
+          {/* Categories Grid - Card Style */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 md:gap-6">
             {visibleCategories.map((category) => (
               <button
                 key={category._id}
                 onClick={() => onCategoryClick(category._id)}
-                className={`group flex flex-col items-center p-6 rounded-xl transition-all duration-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 relative
-                  ${activeCategory === category._id 
-                    ? 'bg-gradient-to-br from-indigo-50 to-purple-50 border-2 border-indigo-300 shadow-lg transform scale-105' 
-                    : 'bg-white border-2 border-gray-100 hover:border-indigo-200 hover:bg-gradient-to-br hover:from-indigo-50 hover:to-purple-50'
-                  }`}
+                className="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden h-32 md:h-40 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
               >
-                {/* Category Icon/Image */}
-                <div className={`w-16 h-16 md:w-20 md:h-20 rounded-full mb-4 flex items-center justify-center transition-all duration-300 shadow-md overflow-hidden
-                  ${activeCategory === category._id 
-                    ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg' 
-                    : 'bg-gradient-to-br from-gray-100 to-gray-200 text-gray-600 group-hover:from-indigo-100 group-hover:to-purple-100 group-hover:text-indigo-600'
-                  }`}
-                >
+                {/* Category Image Background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden">
                   {category.image ? (
                     <img 
                       src={category.image} 
                       alt={category.name}
-                      className="w-full h-full object-cover rounded-full"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = CATEGORY_PRODUCT_IMAGES[category.name] || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&h=500&fit=crop';
+                      }}
                     />
                   ) : CATEGORY_PRODUCT_IMAGES[category.name] ? (
                     <img 
                       src={CATEGORY_PRODUCT_IMAGES[category.name]} 
                       alt={category.name}
-                      className="w-full h-full object-cover rounded-full"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&h=500&fit=crop';
+                      }}
                     />
                   ) : (
-                    <svg className="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                    </svg>
+                    <div className="text-4xl">??</div>
                   )}
                 </div>
 
-                {/* Category Name */}
-                <span className={`text-sm md:text-base font-semibold text-center transition-colors duration-300
-                  ${activeCategory === category._id 
-                    ? 'text-indigo-800' 
-                    : 'text-gray-800 group-hover:text-indigo-700'
-                  }`}
-                >
-                  {category.name}
-                </span>
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
 
-                {/* Active Indicator */}
+                {/* Category Name with Gradient Background */}
+                <div className="absolute inset-0 flex items-end justify-center pb-3 bg-gradient-to-t from-black/60 via-transparent to-transparent">
+                  <h3 className="text-white text-sm md:text-base font-bold text-center px-2">
+                    {category.name}
+                  </h3>
+                </div>
+
+                {/* Active Indicator Border */}
                 {activeCategory === category._id && (
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full"></div>
+                  <div className="absolute inset-0 border-2 border-red-500 rounded-xl"></div>
                 )}
               </button>
             ))}
@@ -182,7 +180,7 @@ export default function CategoryCarousel({
                   onClick={() => setCurrentIndex(index)}
                   className={`h-3 rounded-full transition-all duration-300 hover:scale-125
                     ${currentIndex === index 
-                      ? 'bg-gradient-to-r from-indigo-500 to-purple-600 w-8 shadow-md' 
+                      ? 'bg-gradient-to-r from-red-500 to-red-600 w-8 shadow-md' 
                       : 'bg-gray-300 hover:bg-gray-400 w-3'
                     }`}
                   aria-label={`Go to slide ${index + 1}`}
@@ -195,3 +193,5 @@ export default function CategoryCarousel({
     </section>
   );
 }
+
+

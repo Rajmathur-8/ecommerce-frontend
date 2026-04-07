@@ -574,7 +574,7 @@ export default function OrderSummary({
                 </div>
                 <button
                   onClick={handleRemovePromoCode}
-                  className="text-blue-600 hover:text-blue-700 text-sm"
+                  className="text-gray-700 hover:text-black text-sm"
                 >
                   Remove
                 </button>

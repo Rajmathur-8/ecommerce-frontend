@@ -363,7 +363,7 @@ export default function ProfilePage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Please login to view your profile</h2>
             <Link 
               href="/auth/login" 
-              className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+              className="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
             >
               Login
             </Link>
@@ -532,7 +532,7 @@ export default function ProfilePage() {
                 <div className="mt-6 pt-4 border-t border-gray-200">
                   <button 
                     onClick={() => setIsEditProfileOpen(true)}
-                    className="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium cursor-pointer"
+                    className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium cursor-pointer"
                   >
                     Complete Your Profile
                   </button>
@@ -541,7 +541,7 @@ export default function ProfilePage() {
                 <div className="mt-6 pt-4 border-t border-gray-200">
                   <button 
                     onClick={() => setIsEditProfileOpen(true)}
-                    className="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium cursor-pointer"
+                    className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium cursor-pointer"
                   >
                     Edit Profile
                   </button>
@@ -656,7 +656,7 @@ export default function ProfilePage() {
                         <div className="flex space-x-2 ml-4">
                           <button 
                             onClick={() => handleEditAddress(address)}
-                            className="text-indigo-600 hover:text-indigo-700 text-sm font-medium cursor-pointer"
+                            className="text-gray-700 hover:text-black text-sm font-medium cursor-pointer"
                           >
                             Edit
                           </button>
@@ -802,7 +802,7 @@ export default function ProfilePage() {
                           <div className="mt-3 pt-3 border-t border-gray-200">
                             <Link 
                               href={`/orders/${warranty.orderId}`}
-                              className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
+                              className="text-sm text-gray-700 hover:text-black font-medium"
                             >
                               View Order #{warranty.orderNumber}
                             </Link>
@@ -864,7 +864,7 @@ export default function ProfilePage() {
                             <div>
                               <Link 
                                 href={`/product/${review.product?._id}`}
-                                className="font-semibold text-gray-900 hover:text-indigo-600 transition-colors"
+                                className="font-semibold text-gray-900 hover:text-black transition-colors"
                               >
                                 {review.product?.productName || 'Product'}
                               </Link>

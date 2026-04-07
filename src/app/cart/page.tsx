@@ -645,7 +645,7 @@ export default function CartPage() {
                     return (
                       <div className="p-12 text-center">
                         <p className="text-gray-500 text-lg">Your cart is empty</p>
-                        <Link href="/products" className="mt-4 inline-block text-indigo-600 hover:text-indigo-700 font-medium">
+                        <Link href="/products" className="mt-4 inline-block text-gray-700 hover:text-black font-medium">
                           Continue Shopping
                         </Link>
                       </div>
@@ -674,7 +674,7 @@ export default function CartPage() {
                             <div className="flex justify-between gap-4">
                       <div className="flex-1">
                                 <Link href={`/product/${item.product?._id || ''}`}>
-                                  <h3 className="text-lg font-semibold text-gray-900 hover:text-indigo-600 transition-colors line-clamp-2">
+                                  <h3 className="text-lg font-semibold text-gray-900 hover:text-black transition-colors line-clamp-2">
                                     {item.product?.productName || 'Product'}
                         </h3>
                                 </Link>
@@ -771,7 +771,7 @@ export default function CartPage() {
                                 
                                 <button
                                   onClick={() => handleSaveForLater(item._id)}
-                                  className="flex items-center gap-1.5 text-sm text-indigo-600 hover:text-indigo-700 font-medium hover:bg-indigo-50 px-3 py-1.5 rounded-lg transition-all cursor-pointer"
+                                  className="flex items-center gap-1.5 text-sm text-gray-700 hover:text-black font-medium hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-all cursor-pointer"
                                 >
                                   <Heart className="w-4 h-4" />
                                   Save for Later
@@ -819,7 +819,7 @@ export default function CartPage() {
                                           handleWarrantyToggle(item.product._id, warrantyId);
                                         }}
                                         disabled={loadingWarranties[item.product._id]}
-                                        className="mt-1 h-4 w-4 text-indigo-600 focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                                        className="mt-1 h-4 w-4 text-red-600 focus:ring-2 focus:ring-red-500 cursor-pointer"
                                         onClick={(e) => e.stopPropagation()}
                                       />
                                       <div className="flex-1">
@@ -872,7 +872,7 @@ export default function CartPage() {
                                 <div className="flex justify-center pt-2">
                                   <button
                                     onClick={() => setShowWarrantyModal(prev => ({ ...prev, [item.product._id]: true }))}
-                                    className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium flex items-center gap-2"
+                                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 hover:!text-black transition-colors text-sm font-medium flex items-center gap-2"
                                   >
                                     <Eye className="w-4 h-4" />
                                     View All ({productWarranties[item.product._id].length} warranties)
@@ -1237,7 +1237,7 @@ export default function CartPage() {
                                 const warrantyId = isSelected ? null : warranty._id;
                                 handleWarrantyToggle(productId, warrantyId);
                               }}
-                              className="mt-1 w-4 h-4 text-indigo-600 focus:ring-indigo-500"
+                              className="mt-1 w-4 h-4 text-red-600 focus:ring-red-500"
                               onClick={(e) => e.stopPropagation()}
                             />
                             <div className="flex-1">

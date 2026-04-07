@@ -214,7 +214,7 @@ export default function EditProfileModal({ isOpen, onClose, onProfileUpdated }: 
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
                     placeholder="Enter full name"
                   />
                 </div>
@@ -234,7 +234,7 @@ export default function EditProfileModal({ isOpen, onClose, onProfileUpdated }: 
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="w-full pl-12 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-full pl-12 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
                       placeholder="Enter phone number"
                     />
                   </div>
@@ -259,7 +259,7 @@ export default function EditProfileModal({ isOpen, onClose, onProfileUpdated }: 
                   <button
                     type="submit"
                     disabled={loading}
-                    className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? 'Updating...' : 'Update Profile'}
                   </button>
@@ -272,3 +272,5 @@ export default function EditProfileModal({ isOpen, onClose, onProfileUpdated }: 
     </>
   );
 }
+
+

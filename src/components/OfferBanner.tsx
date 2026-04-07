@@ -55,7 +55,7 @@ export default function OfferBanner({ title = "Limited Time Offers", showOffers 
                 <CreditCard className="w-5 h-5 text-blue-600" />
                 <div>
                   <span className="font-bold text-gray-900 text-sm">Upto ₹7,500</span>
-                  <span className="text-blue-600 text-xs font-semibold ml-1">HDFC EMI</span>
+                  <span className="text-red-600 text-xs font-semibold ml-1">HDFC EMI</span>
                 </div>
               </div>
               <div className="flex items-center gap-2 bg-white px-4 py-2.5 rounded-lg border-2 border-green-300 shadow-md hover:shadow-lg transition-shadow">

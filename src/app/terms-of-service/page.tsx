@@ -10,7 +10,7 @@ export default function TermsOfService() {
         <nav className="mb-8">
           <ol className="flex items-center space-x-2 text-sm text-gray-600">
             <li>
-              <Link href="/" className="hover:text-indigo-600 transition-colors">
+              <Link href="/" className="hover:text-black transition-colors">
                 Home
               </Link>
             </li>
@@ -215,3 +215,5 @@ export default function TermsOfService() {
     </div>
   );
 }
+
+

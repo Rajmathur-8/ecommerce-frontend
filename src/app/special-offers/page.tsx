@@ -54,8 +54,8 @@ export default function SpecialOffersPage() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-2 ">{offer.code}</h3>
                 <p className="text-gray-600  mb-2">{offer.description}</p>
                 <div className="flex  gap-2 mb-2">
-                  <span className="inline-block px-2 py-1 text-xs rounded bg-indigo-100 text-indigo-700 font-semibold">
-                    {offer.type === "percentage" ? `${offer.value}% OFF` : `₹${offer.value} OFF`}
+                  <span className="inline-block px-2 py-1 text-xs rounded bg-red-100 text-red-700 font-semibold">
+                    {offer.type === "percentage" ? `${offer.value}% OFF` : `?${offer.value} OFF`}
                   </span>
                 </div>
                 {offer.validUntil && (
@@ -69,3 +69,4 @@ export default function SpecialOffersPage() {
     </div>
   );
 } 
+

@@ -316,7 +316,7 @@ export default function PaymentSuccessPage() {
         }`}>
           <Link
             href="/checkout/payment"
-            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium shadow-lg hover:shadow-xl"
+            className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium shadow-lg hover:shadow-xl"
           >
             Try Again
           </Link>

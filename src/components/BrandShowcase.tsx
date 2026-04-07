@@ -38,7 +38,7 @@ export default function BrandShowcase() {
             >
               <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-gray-300 h-56 flex flex-col items-center justify-center relative overflow-hidden">
                 {/* Background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-gray-100 group-hover:from-slate-100 group-hover:to-gray-200 transition-all duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-gray-100 group-hover:from-red-50 group-hover:to-red-100 transition-all duration-300" />
                 
                 {/* Content */}
                 <div className="relative z-10 flex flex-col items-center justify-center w-full h-full px-6">
@@ -52,11 +52,11 @@ export default function BrandShowcase() {
                       priority
                     />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-slate-700 text-center transition-colors duration-300">
+                  <h3 className="text-xl font-bold text-gray-900 group-hover:text-gray-900 text-center transition-colors duration-300">
                     {brand.name}
                   </h3>
-                  <div className="mt-3 text-sm text-gray-500 group-hover:text-gray-700 transition-colors">
-                    Shop Now →
+                  <div className="mt-3 text-sm text-gray-500 group-hover:text-red-600 transition-colors">
+                    Shop Now ?
                   </div>
                 </div>
               </div>
@@ -67,3 +67,5 @@ export default function BrandShowcase() {
     </section>
   );
 }
+
+

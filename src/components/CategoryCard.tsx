@@ -35,7 +35,7 @@ export default function CategoryCard({ id, name, image, productCount, descriptio
 
         {/* Category Info */}
         <div className="p-4">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">
+          <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-red-600 transition-colors">
             {name}
           </h3>
           {description && (
@@ -45,7 +45,7 @@ export default function CategoryCard({ id, name, image, productCount, descriptio
           )}
           
           {/* Explore Button */}
-          <div className="mt-3 flex items-center text-indigo-600 font-medium text-sm group-hover:text-indigo-700 transition-colors">
+          <div className="mt-3 flex items-center text-red-600 font-medium text-sm group-hover:text-red-700 transition-colors">
             Explore
             <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -56,3 +56,4 @@ export default function CategoryCard({ id, name, image, productCount, descriptio
     </Link>
   );
 } 
+

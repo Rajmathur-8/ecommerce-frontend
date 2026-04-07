@@ -42,3 +42,4 @@ const ThreeD = ({ className = "", sceneUrl = "https://prod.spline.design/KFonZGt
 };
 
 export default ThreeD;
+

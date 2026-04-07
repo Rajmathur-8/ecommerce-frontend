@@ -404,7 +404,7 @@ export const PaymentPageSkeleton = () => (
                 </div>
 
                 {/* EMI Options Skeleton */}
-                <div className="mt-6 p-6 bg-blue-50 rounded-xl border border-blue-200">
+                <div className="mt-6 p-6 bg-gray-50 rounded-xl border border-gray-200">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
                       <div className="w-5 h-5 bg-gray-200 rounded animate-pulse"></div>
@@ -472,7 +472,7 @@ export const PaymentPageSkeleton = () => (
                 <div className="mt-6 p-6 bg-gray-50 rounded-xl border border-gray-200">
                   <div className="h-5 bg-gray-200 rounded w-48 mb-4 animate-pulse"></div>
                   <div className="h-4 bg-gray-200 rounded w-80 mb-4 animate-pulse"></div>
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-4 h-4 bg-gray-200 rounded animate-pulse"></div>
                       <div className="h-4 bg-gray-200 rounded w-32 animate-pulse"></div>
@@ -1070,3 +1070,6 @@ export const OrdersPageSkeleton = () => (
     </div>
   </div>
 );
+
+
+

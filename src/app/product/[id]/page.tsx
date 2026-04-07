@@ -1449,6 +1449,60 @@ export default function ProductDetailPage() {
 
                 {/* No instructions needed */}
               </div>
+
+              {/* Bank Offers Section - Inside Left Card */}
+              {!product.isPreOrder && (
+              <div className="bg-white rounded-lg p-4 border border-blue-200 mt-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="text-2xl">🏦</div>
+                  <h3 className="font-bold text-lg text-gray-900">
+                    Bank Offers
+                  </h3>
+                </div>
+                
+                <div className="space-y-2.5">
+                  <div className="bg-blue-50 rounded-lg p-3 border border-blue-200 hover:shadow-md transition-all">
+                    <p className="text-sm font-semibold text-gray-900">
+                      5% Cashback
+                    </p>
+                    <p className="text-xs text-gray-600 mt-1">
+                      on ICICI Bank Credit Card | Min. purchase ₹10,000
+                    </p>
+                  </div>
+                  
+                  <div className="bg-blue-50 rounded-lg p-3 border border-blue-200 hover:shadow-md transition-all">
+                    <p className="text-sm font-semibold text-gray-900">
+                      ₹2,000 Instant Discount
+                    </p>
+                    <p className="text-xs text-gray-600 mt-1">
+                      on HDFC Bank Debit/Credit Card | Min. purchase ₹25,000
+                    </p>
+                  </div>
+                  
+                  <div className="bg-blue-50 rounded-lg p-3 border border-blue-200 hover:shadow-md transition-all">
+                    <p className="text-sm font-semibold text-gray-900">
+                      12 Months EMI
+                    </p>
+                    <p className="text-xs text-gray-600 mt-1">
+                      Zero Interest on Credit Cards | Min. purchase ₹15,000
+                    </p>
+                  </div>
+                  
+                  <div className="bg-blue-50 rounded-lg p-3 border border-blue-200 hover:shadow-md transition-all">
+                    <p className="text-sm font-semibold text-gray-900">
+                      Rewards Points
+                    </p>
+                    <p className="text-xs text-gray-600 mt-1">
+                      Earn up to 5% rewards on SBI Credit Card transactions
+                    </p>
+                  </div>
+                </div>
+                
+                <button className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm">
+                  View All Offers
+                </button>
+              </div>
+              )}
             </div>
 
             {/* Product Info Section */}
@@ -1506,41 +1560,49 @@ export default function ProductDetailPage() {
 
               {/* Pricing - Hide for pre-order products */}
               {!product.isPreOrder && (
-              <div className="bg-gray-50 rounded-lg p-5 border border-gray-200">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="text-3xl lg:text-4xl font-bold text-gray-900">
+              <div className="space-y-3">
+                {/* Price Section */}
+                <div className="flex items-end gap-3">
+                  <span className="text-4xl font-bold text-gray-900">
                     {formatCurrency(currentPrice)}
                   </span>
                   {originalPrice > currentPrice && (
-                    <span className="text-lg text-gray-500 line-through">
-                      {formatCurrency(originalPrice)}
-                    </span>
-                  )}
-                  {discount > 0 && (
-                    <span className="bg-green-50 text-green-700 px-3 py-1.5 rounded-md text-sm font-semibold border border-green-200">
-                      {discount}% OFF
-                    </span>
+                    <>
+                      <span className="text-xl text-gray-500 line-through">
+                        {formatCurrency(originalPrice)}
+                      </span>
+                      {discount > 0 && (
+                        <span className="bg-red-600 text-white px-3 py-1 rounded-md text-sm font-bold">
+                          {discount}% OFF
+                        </span>
+                      )}
+                    </>
                   )}
                 </div>
                 
+                {/* Savings Info */}
+                {originalPrice > currentPrice && (
+                  <div className="text-green-700 font-semibold text-sm">
+                    You Save {formatCurrency(originalPrice - currentPrice)}
+                  </div>
+                )}
+                
                 {/* Stock Status */}
-                <div className="mt-3">
-                  {currentStock > 0 ? (
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-sm font-medium text-green-700">
-                        In Stock ({currentStock} available)
-                      </span>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                      <span className="text-sm font-medium text-red-600">
-                        Out of Stock
-                      </span>
-                    </div>
-                  )}
-                </div>
+                {currentStock > 0 ? (
+                  <div className="flex items-center gap-2 bg-green-50 px-3 py-2 rounded-md border border-green-200">
+                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                    <span className="text-sm font-semibold text-green-700">
+                      In Stock - {currentStock} available
+                    </span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 bg-red-50 px-3 py-2 rounded-md border border-red-200">
+                    <X className="w-5 h-5 text-red-600 flex-shrink-0" />
+                    <span className="text-sm font-semibold text-red-700">
+                      Out of Stock
+                    </span>
+                  </div>
+                )}
               </div>
               )}
 
@@ -1561,12 +1623,12 @@ export default function ProductDetailPage() {
 
               {/* Delivery Checker - Hide for pre-order products */}
               {!product.isPreOrder && (
-              <div className="bg-gray-50 rounded-lg p-4 border border-gray-200 delivery-checker-container">
+              <div className="bg-white rounded-lg p-4 border border-gray-300 delivery-checker-container">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <Truck className="w-5 h-5 text-blue-600" />
-                    <h3 className="font-semibold text-base text-gray-900">
-                      Check Delivery
+                    <Truck className="w-5 h-5 text-red-600" />
+                    <h3 className="font-bold text-base text-gray-900">
+                      Check Delivery At
                     </h3>
                   </div>
                 </div>
@@ -1729,7 +1791,7 @@ export default function ProductDetailPage() {
                         {/* Color Selection */}
                         {colorMap.size > 1 && (
                           <div>
-                            <h4 className="text-sm font-semibold text-gray-900 mb-3">
+                            <h4 className="text-sm font-bold text-gray-900 mb-3">
                               Select Color
                             </h4>
                             <div className="flex flex-wrap gap-3">
@@ -1841,18 +1903,18 @@ export default function ProductDetailPage() {
                                     className={`relative w-8 h-8 rounded-full border-2 transition-all flex items-center justify-center ${
                                       isSelected
                                         ? isLight
-                                          ? 'border-gray-700 ring-2 ring-blue-300 ring-offset-1 cursor-pointer scale-110'
-                                          : 'border-blue-600 ring-2 ring-blue-300 ring-offset-1 cursor-pointer scale-110'
+                                          ? 'border-gray-700 ring-2 ring-red-300 ring-offset-1 cursor-pointer scale-110'
+                                          : 'border-red-600 ring-2 ring-red-300 ring-offset-1 cursor-pointer scale-110'
                                         : data.hasStock
                                         ? isLight
                                           ? 'border-gray-400 hover:border-gray-600 cursor-pointer hover:scale-105'
-                                          : 'border-gray-300 hover:border-blue-400 cursor-pointer hover:scale-105'
+                                          : 'border-gray-300 hover:border-red-400 cursor-pointer hover:scale-105'
                                         : 'border-gray-200 cursor-not-allowed opacity-50'
                                     }`}
                                     style={{
                                       backgroundColor: colorValue,
                                       boxShadow: isSelected 
-                                        ? '0 0 0 2px rgba(59, 130, 246, 0.3)' 
+                                        ? '0 0 0 2px rgba(220, 38, 38, 0.3)' 
                                         : isLight 
                                           ? '0 0 0 1px rgba(0, 0, 0, 0.1) inset' 
                                           : 'none'
@@ -1878,7 +1940,7 @@ export default function ProductDetailPage() {
                         {/* Size Selection */}
                         {sizeMap.size > 1 && (
                           <div>
-                            <h4 className="text-sm font-semibold text-gray-900 mb-3">
+                            <h4 className="text-sm font-bold text-gray-900 mb-3">
                               Select Size (RAM + Storage)
                             </h4>
                             <div className="flex flex-wrap gap-2">
@@ -1913,11 +1975,11 @@ export default function ProductDetailPage() {
                                       setSelectedImage(0);
                                     }}
                                     disabled={!isAvailableForColor}
-                                    className={`px-4 py-2 rounded-sm border-2 font-medium text-sm transition-all ${
+                                    className={`px-4 py-2.5 rounded-lg border-2 font-semibold text-sm transition-all ${
                                       isSelected
-                                        ? 'border-blue-600 bg-blue-600 text-white cursor-pointer'
+                                        ? 'border-red-600 bg-red-600 text-white cursor-pointer shadow-md'
                                         : isAvailableForColor
-                                        ? 'border-gray-300 bg-white text-gray-900 hover:border-blue-400 cursor-pointer'
+                                        ? 'border-gray-300 bg-white text-gray-900 hover:border-red-400 hover:shadow-sm cursor-pointer'
                                         : 'border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed'
                                     }`}
                                   >
@@ -1938,21 +2000,21 @@ export default function ProductDetailPage() {
               {/* Quantity Selector - Hide for pre-order products */}
               {!product.isPreOrder && (
               <div className="flex items-center gap-4">
-                <span className="font-semibold text-gray-900">Quantity:</span>
-                <div className="flex items-center bg-white border border-gray-300 rounded-lg">
+                <span className="text-sm font-bold text-gray-900">Quantity:</span>
+                <div className="flex items-center bg-white border-2 border-gray-300 rounded-lg">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="p-2 hover:bg-gray-50 transition-colors rounded-l-lg cursor-pointer text-gray-700"
+                    className="p-2.5 hover:bg-gray-100 transition-colors rounded-l-lg cursor-pointer text-gray-700 font-bold"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
-                  <span className="px-4 py-2 font-semibold min-w-[50px] text-center text-gray-900">
+                  <span className="px-6 py-2 font-bold min-w-[70px] text-center text-gray-900 text-lg">
                     {quantity}
                   </span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
                     disabled={quantity >= currentStock}
-                    className="p-2 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed rounded-r-lg cursor-pointer text-gray-700"
+                    className="p-2.5 hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed rounded-r-lg cursor-pointer text-gray-700 font-bold"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
@@ -2008,7 +2070,7 @@ export default function ProductDetailPage() {
                       
                       setShowPreOrderModal(true);
                     }}
-                    className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-4 rounded-sm transition-colors shadow-md hover:shadow-lg hover:cursor-pointer"
+                    className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-md hover:shadow-lg hover:cursor-pointer text-lg"
                   >
                     Notify Me
                   </button>
@@ -2017,18 +2079,18 @@ export default function ProductDetailPage() {
                 <div className="space-y-3">
                   <button
                     onClick={handleGoToCart}
-                    className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer text-lg"
                   >
                     <ChevronRight className="w-5 h-5" />
                     <span>Go to Cart</span>
                   </button>
                 </div>
               ) : (
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <button
                     onClick={handleAddToCart}
                     disabled={currentStock <= 0 || isAddingToCart}
-                    className="w-full bg-blue-800 hover:bg-blue-900 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    className="w-full bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-lg shadow-md hover:shadow-lg"
                   >
                     {isAddingToCart ? (
                       <div className="flex items-center">
@@ -2043,6 +2105,36 @@ export default function ProductDetailPage() {
                     )}
                   </button>
                 </div>
+              )}
+
+              {/* Key Benefits */}
+              {!product.isPreOrder && (
+              <div className="grid grid-cols-2 gap-3 pt-3">
+                <div className="flex items-center gap-2 p-2.5 bg-green-50 rounded-lg border border-green-200">
+                  <Truck className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <div className="text-xs">
+                    <p className="font-semibold text-green-700">Free Delivery</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 p-2.5 bg-blue-50 rounded-lg border border-blue-200">
+                  <RotateCcw className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  <div className="text-xs">
+                    <p className="font-semibold text-blue-700">Easy Returns</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 p-2.5 bg-purple-50 rounded-lg border border-purple-200">
+                  <Shield className="w-5 h-5 text-purple-600 flex-shrink-0" />
+                  <div className="text-xs">
+                    <p className="font-semibold text-purple-700">Secure Payment</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 p-2.5 bg-orange-50 rounded-lg border border-orange-200">
+                  <Clock className="w-5 h-5 text-orange-600 flex-shrink-0" />
+                  <div className="text-xs">
+                    <p className="font-semibold text-orange-700">Fast Shipping</p>
+                  </div>
+                </div>
+              </div>
               )}
 
          
@@ -2074,7 +2166,7 @@ export default function ProductDetailPage() {
               {/* Specifications */}
               <div className="bg-gray-50 rounded-lg p-5 border border-gray-200">
                 <div className="flex items-center gap-2 mb-4">
-                  <Award className="w-5 h-5 text-blue-600" />
+                  <Award className="w-5 h-5 text-red-600" />
                   <h3 className="font-semibold text-lg text-gray-900">
                     Specifications
                   </h3>
@@ -2094,7 +2186,7 @@ export default function ProductDetailPage() {
                     {product.specifications.length > 3 && (
                       <button
                         onClick={() => setShowAllSpecifications(!showAllSpecifications)}
-                        className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 cursor-pointer"
+                        className="text-sm text-red-600 hover:text-red-700 font-medium flex items-center gap-1 cursor-pointer"
                       >
                         {showAllSpecifications ? 'Show Less' : `Read More (${product.specifications.length - 3}+ more)`}
                         <ChevronRight className={`w-4 h-4 transition-transform ${showAllSpecifications ? 'rotate-90' : ''}`} />
@@ -2112,7 +2204,7 @@ export default function ProductDetailPage() {
               {/* Key Features */}
               <div className="bg-gray-50 rounded-lg p-5 border border-gray-200">
                 <div className="flex items-center gap-2 mb-4">
-                  <Zap className="w-5 h-5 text-blue-600" />
+                  <Zap className="w-5 h-5 text-red-600" />
                   <h3 className="font-semibold text-lg text-gray-900">
                     Key Features
                   </h3>
@@ -2123,7 +2215,7 @@ export default function ProductDetailPage() {
                     <ul className="space-y-2.5 mb-3">
                       {(showAllFeatures ? product.keyFeatures : product.keyFeatures.slice(0, 3)).map((feature, index) => (
                         <li key={index} className="flex items-start gap-2 text-sm text-gray-700">
-                          <span className="text-blue-600 mt-0.5">•</span>
+                          <span className="text-red-600 mt-0.5">•</span>
                           <span className="flex-1">{feature}</span>
                         </li>
                       ))}
@@ -2132,7 +2224,7 @@ export default function ProductDetailPage() {
                     {product.keyFeatures.length > 3 && (
                       <button
                         onClick={() => setShowAllFeatures(!showAllFeatures)}
-                        className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 cursor-pointer"
+                        className="text-sm text-red-600 hover:text-red-700 font-medium flex items-center gap-1 cursor-pointer"
                       >
                         {showAllFeatures ? 'Show Less' : `Read More (${product.keyFeatures.length - 3}+ more)`}
                         <ChevronRight className={`w-4 h-4 transition-transform ${showAllFeatures ? 'rotate-90' : ''}`} />
@@ -2150,7 +2242,7 @@ export default function ProductDetailPage() {
               {/* What's in the Box */}
               <div className="bg-gray-50 rounded-lg p-5 border border-gray-200">
                 <div className="flex items-center gap-2 mb-4">
-                  <Package className="w-5 h-5 text-blue-600" />
+                  <Package className="w-5 h-5 text-red-600" />
                   <h3 className="font-semibold text-lg text-gray-900">
                     What&apos;s in the Box
                   </h3>
@@ -2161,7 +2253,7 @@ export default function ProductDetailPage() {
                     <ul className="space-y-2.5 mb-3">
                       {(showAllBoxItems ? product.whatsInBox : product.whatsInBox.slice(0, 3)).map((item, index) => (
                         <li key={index} className="flex items-start gap-2 text-sm text-gray-700">
-                          <span className="text-blue-600 mt-0.5">•</span>
+                          <span className="text-red-600 mt-0.5">•</span>
                           <span className="flex-1">{item}</span>
                         </li>
                       ))}
@@ -2170,7 +2262,7 @@ export default function ProductDetailPage() {
                     {product.whatsInBox.length > 3 && (
                       <button
                         onClick={() => setShowAllBoxItems(!showAllBoxItems)}
-                        className="text-sm text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 cursor-pointer"
+                        className="text-sm text-red-600 hover:text-red-700 font-medium flex items-center gap-1 cursor-pointer"
                       >
                         {showAllBoxItems ? 'Show Less' : `Read More (${product.whatsInBox.length - 3}+ more)`}
                         <ChevronRight className={`w-4 h-4 transition-transform ${showAllBoxItems ? 'rotate-90' : ''}`} />
@@ -2233,7 +2325,7 @@ export default function ProductDetailPage() {
                         )}
                       </div>
                       <div className="p-4">
-                        <h3 className="text-sm font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                        <h3 className="text-sm font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-black transition-colors">
                           {productName}
                         </h3>
                         <div className="flex items-center gap-2">
@@ -2304,7 +2396,7 @@ export default function ProductDetailPage() {
                   <div className="flex justify-center pt-2">
                     <button
                       onClick={() => setShowWarrantyModal(true)}
-                      className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center gap-2"
+                      className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 hover:!text-black transition-colors font-medium flex items-center gap-2"
                     >
                       <Eye className="w-4 h-4" />
                       View All ({warranties.length} warranties)

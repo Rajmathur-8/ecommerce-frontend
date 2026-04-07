@@ -4,8 +4,7 @@ import { usePathname } from 'next/navigation';
 import Header from './Header';
 import Footer from './Footer';
 import ChatSupportWidget from './ChatSupportWidget';
-import TrustBar from './TrustBar';
-import OfferBanner from './OfferBanner';
+import CategoryNavBar from './CategoryNavBar';
 
 interface ConditionalLayoutProps {
   children: React.ReactNode;
@@ -36,8 +35,7 @@ export default function ConditionalLayout({ children }: ConditionalLayoutProps) 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <TrustBar />
-      {pathname === '/' && <OfferBanner />}
+      <CategoryNavBar />
       <main className="flex-1">
         {children}
       </main>
@@ -47,3 +45,5 @@ export default function ConditionalLayout({ children }: ConditionalLayoutProps) 
     </div>
   );
 }
+
+

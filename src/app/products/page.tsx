@@ -356,7 +356,7 @@ export default function ProductsPage() {
                   {(filters.search || filters.minPrice || filters.maxPrice || filters.brands.length > 0 || filters.inStock) && (
                     <button
                       onClick={handleResetFilters}
-                      className="text-xs font-semibold text-blue-600 hover:text-blue-700 underline decoration-dotted underline-offset-2 transition-colors duration-200"
+                      className="text-xs font-semibold text-gray-700 hover:text-black underline decoration-dotted underline-offset-2 transition-colors duration-200"
                     >
                       Clear All
                     </button>
@@ -377,7 +377,7 @@ export default function ProductsPage() {
                       value={filters.search}
                       onChange={(e) => handleSearch(e.target.value)}
                       placeholder="Type here..."
-                      className="w-full pl-10 pr-4 py-2.5 text-sm text-slate-900 bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:bg-white focus:border-blue-400 focus:ring-1 focus:ring-blue-300 transition-all duration-200 placeholder-slate-500"
+                      className="w-full pl-10 pr-4 py-2.5 text-sm text-slate-900 bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:bg-white focus:border-red-400 focus:ring-1 focus:ring-red-300 transition-all duration-200 placeholder-slate-500"
                     />
                   </div>
                 </div>
@@ -389,7 +389,7 @@ export default function ProductsPage() {
                     <select
                       value={filters.sort}
                       onChange={(e) => handleFilterChange('sort', e.target.value)}
-                      className="w-full px-4 py-2.5 text-sm text-slate-900 bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:bg-white focus:border-blue-400 focus:ring-1 focus:ring-blue-300 transition-all duration-200 appearance-none cursor-pointer"
+                      className="w-full px-4 py-2.5 text-sm text-slate-900 bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:bg-white focus:border-red-400 focus:ring-1 focus:ring-red-300 transition-all duration-200 appearance-none cursor-pointer"
                     >
                       <option value="newest">Newest</option>
                       <option value="price_asc">Low to High</option>
@@ -460,7 +460,7 @@ export default function ProductsPage() {
                                 : filters.brands.filter(b => b !== brand);
                               handleFilterChange('brands', updatedBrands);
                             }}
-                            className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                            className="w-4 h-4 rounded border-slate-300 text-black cursor-pointer accent-black"
                           />
                           <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">
                             {brand}
@@ -498,7 +498,7 @@ export default function ProductsPage() {
                                           : filters.ram.filter(r => r !== value);
                                         handleFilterChange('ram', updatedRam);
                                       }}
-                                      className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                      className="w-4 h-4 rounded border-slate-300 text-black cursor-pointer accent-black"
                                     />
                                     <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{value} GB</span>
                                   </label>
@@ -517,7 +517,7 @@ export default function ProductsPage() {
                                           : filters.ram.filter(r => r !== value);
                                         handleFilterChange('ram', updatedRam);
                                       }}
-                                      className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                      className="w-4 h-4 rounded border-slate-300 text-black cursor-pointer accent-black"
                                     />
                                     <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{value} GB</span>
                                   </label>
@@ -546,7 +546,7 @@ export default function ProductsPage() {
                                           : filters.rom.filter(r => r !== value);
                                         handleFilterChange('rom', updatedRom);
                                       }}
-                                      className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                      className="w-4 h-4 rounded border-slate-300 text-black cursor-pointer accent-black"
                                     />
                                     <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{value === '1024' ? '1 TB' : `${value} GB`}</span>
                                   </label>
@@ -565,7 +565,7 @@ export default function ProductsPage() {
                                           : filters.rom.filter(r => r !== value);
                                         handleFilterChange('rom', updatedRom);
                                       }}
-                                      className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                      className="w-4 h-4 rounded border-slate-300 text-black cursor-pointer accent-black"
                                     />
                                     <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">
                                       {value === '1024' ? '1 TB' : value === '2048' ? '2 TB' : `${value} GB`}
@@ -652,7 +652,7 @@ export default function ProductsPage() {
                                       : filters.ram.filter(r => r !== value);
                                     handleFilterChange('ram', updatedRam);
                                   }}
-                                  className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                  className="w-4 h-4 rounded border-slate-300 text-black cursor-pointer accent-black"
                                 />
                                 <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{value} GB</span>
                               </label>
@@ -677,7 +677,7 @@ export default function ProductsPage() {
                                       : filters.rom.filter(r => r !== value);
                                     handleFilterChange('rom', updatedRom);
                                   }}
-                                  className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                  className="w-4 h-4 rounded border-slate-300 text-black cursor-pointer accent-black"
                                 />
                                 <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{value === '1024' ? '1 TB' : `${value} GB`}</span>
                               </label>
@@ -803,7 +803,7 @@ export default function ProductsPage() {
                                       : filters.ram.filter(r => r !== value);
                                     handleFilterChange('ram', updatedRam);
                                   }}
-                                  className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                  className="w-4 h-4 rounded border-slate-300 text-black cursor-pointer accent-black"
                                 />
                                 <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{value} GB</span>
                               </label>
@@ -828,7 +828,7 @@ export default function ProductsPage() {
                                       : filters.rom.filter(r => r !== value);
                                     handleFilterChange('rom', updatedRom);
                                   }}
-                                  className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                  className="w-4 h-4 rounded border-slate-300 text-black cursor-pointer accent-black"
                                 />
                                 <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">
                                   {value === '1024' ? '1 TB' : value === '2048' ? '2 TB' : `${value} GB`}
@@ -996,7 +996,7 @@ export default function ProductsPage() {
                                           : filters.rom.filter(r => r !== value);
                                         handleFilterChange('rom', updatedRom);
                                       }}
-                                      className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                      className="w-4 h-4 rounded border-slate-300 text-black cursor-pointer accent-black"
                                     />
                                     <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{value} kg{value === '12' ? '+' : ''}</span>
                                   </label>
@@ -1015,7 +1015,7 @@ export default function ProductsPage() {
                                           : filters.rom.filter(r => r !== value);
                                         handleFilterChange('rom', updatedRom);
                                       }}
-                                      className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                      className="w-4 h-4 rounded border-slate-300 text-black cursor-pointer accent-black"
                                     />
                                     <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{value} L{value === '400' ? '+' : ''}</span>
                                   </label>
@@ -1034,7 +1034,7 @@ export default function ProductsPage() {
                                           : filters.rom.filter(r => r !== value);
                                         handleFilterChange('rom', updatedRom);
                                       }}
-                                      className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer accent-blue-600"
+                                      className="w-4 h-4 rounded border-slate-300 text-black cursor-pointer accent-black"
                                     />
                                     <span className="text-sm text-slate-700 group-hover:text-slate-900 transition-colors">{value} Ton{value === '3' ? '+' : ''}</span>
                                   </label>
@@ -1882,7 +1882,7 @@ export default function ProductsPage() {
                         Search: &quot;{filters.search}&quot;
                         <button 
                           onClick={() => handleFilterChange('search', '')} 
-                          className="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-200 rounded-full p-0.5 transition-colors duration-200"
+                          className="text-gray-700 hover:text-black hover:bg-gray-200 rounded-full p-0.5 transition-colors duration-200"
                         >
                           <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1924,7 +1924,7 @@ export default function ProductsPage() {
                         In Stock Only
                         <button 
                           onClick={() => handleFilterChange('inStock', false)} 
-                          className="text-blue-600 hover:text-blue-800 hover:bg-blue-200 rounded-full p-0.5 transition-colors duration-200"
+                          className="text-gray-700 hover:text-black hover:bg-gray-200 rounded-full p-0.5 transition-colors duration-200"
                         >
                           <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

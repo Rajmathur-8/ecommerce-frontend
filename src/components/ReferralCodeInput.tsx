@@ -91,7 +91,7 @@ export default function ReferralCodeInput({
           onBlur={handleBlur}
           disabled={disabled}
           placeholder="Enter referral code"
-          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent ${
             isValid 
               ? 'border-green-300 bg-green-50' 
               : error 
@@ -133,7 +133,7 @@ export default function ReferralCodeInput({
 
       {/* Info Message */}
       {!value && !error && (
-        <div className="flex items-start gap-2 text-sm text-gray-600 bg-blue-50 px-3 py-2 rounded-lg">
+        <div className="flex items-start gap-2 text-sm text-gray-600 bg-gray-50 px-3 py-2 rounded-lg">
           <Info className="h-4 w-4 mt-0.5 flex-shrink-0" />
           <span>
             Get 200 reward points on your first order when you use a valid referral code!
@@ -143,3 +143,6 @@ export default function ReferralCodeInput({
     </div>
   );
 }
+
+
+

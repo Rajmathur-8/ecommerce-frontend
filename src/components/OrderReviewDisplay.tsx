@@ -205,7 +205,7 @@ export default function OrderReviewDisplay({ productId }: OrderReviewDisplayProp
               e.preventDefault();
               fetchReviews(1);
             }}
-            className="mt-2 text-blue-600 hover:text-blue-700"
+            className="mt-2 text-gray-700 hover:text-black"
           >
             Try again
           </button>
@@ -238,7 +238,7 @@ export default function OrderReviewDisplay({ productId }: OrderReviewDisplayProp
           {reviews.length > 0 && (
             <button 
               onClick={handleViewAllReviews}
-              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium text-sm cursor-pointer"
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 hover:!text-black transition-colors font-medium text-sm cursor-pointer"
             >
               View All Reviews
             </button>

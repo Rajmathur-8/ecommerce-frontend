@@ -153,7 +153,7 @@ export default function RegisterPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Submitting...' : 'Submit'}
               </button>
@@ -206,7 +206,7 @@ export default function RegisterPage() {
             </div>
             <div className="flex justify-between items-center mt-6">
               <span className="text-sm text-gray-600">Already Registered</span>
-              <Link href="/auth/login" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">Sign In</Link>
+              <Link href="/auth/login" className="text-sm font-medium text-gray-700 hover:text-black">Sign In</Link>
             </div>
           </form>
         </div>

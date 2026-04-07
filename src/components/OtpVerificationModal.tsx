@@ -196,7 +196,7 @@ export default function OtpVerificationModal({
                 type="button"
                 onClick={handleResendOtp}
                 disabled={resendCooldown > 0 || resendLoading}
-                className="text-indigo-600 hover:text-indigo-700 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                className="text-gray-700 hover:text-black text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {resendLoading ? 'Sending...' : 
                  resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 

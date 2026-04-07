@@ -2482,7 +2482,7 @@ export default function PaymentPage() {
           <div className="text-center">
             <h2 className="text-xl font-semibold text-black mb-2">Cart Not Found</h2>
             <p className="text-black mb-4">Please add items to your cart first.</p>
-            <Link href="/products" className="text-indigo-600 hover:text-indigo-700">
+            <Link href="/products" className="text-gray-700 hover:text-black">
               Continue Shopping
             </Link>
           </div>
@@ -2510,7 +2510,7 @@ export default function PaymentPage() {
           <div className="mb-8">
             <Link
               href="/checkout/address"
-              className="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-700 mb-4"
+              className="inline-flex items-center gap-2 text-gray-700 hover:text-black mb-4"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Address Selection
@@ -2597,7 +2597,7 @@ export default function PaymentPage() {
                         </h3>
                         <button
                           onClick={() => setShowEMIOptions(!showEMIOptions)}
-                          className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                          className="text-gray-700 hover:text-black text-sm font-medium"
                         >
                           {showEMIOptions ? 'Hide' : 'View'} EMI Plans
                         </button>
@@ -2704,7 +2704,7 @@ export default function PaymentPage() {
                             </div>
                             <button
                               onClick={() => setSelectedEMI(null)}
-                              className="text-blue-600 hover:text-blue-700 text-sm"
+                              className="text-gray-700 hover:text-black text-sm"
                             >
                               Remove
                             </button>
@@ -3203,7 +3203,7 @@ export default function PaymentPage() {
                           value={cardHolderName}
                           onChange={(e) => setCardHolderName(e.target.value)}
                           placeholder="Enter your name"
-                          className="w-full text-black px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent uppercase"
+                          className="w-full text-black px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent uppercase"
                         />
                       </div>
 
@@ -3376,7 +3376,7 @@ export default function PaymentPage() {
                                 onChange={(e) => setCvv(e.target.value.replace(/\D/g, ''))}
                                 placeholder={savedCards.find(c => c.id === selectedSavedCard)?.cardBrand === 'amex' ? "1234" : "123"}
                                 maxLength={savedCards.find(c => c.id === selectedSavedCard)?.cardBrand === 'amex' ? 4 : 3}
-                                className="w-full text-black px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                className="w-full text-black px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                               />
                               <button
                                 type="button"

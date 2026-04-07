@@ -160,7 +160,7 @@ export default function RewardPointsRedeem({
               Points Redeemed
             </span>
             <span className="text-green-700 text-sm">
-              -₹{redeemedAmount}
+              -?{redeemedAmount}
             </span>
           </div>
           <button 
@@ -185,12 +185,12 @@ export default function RewardPointsRedeem({
               value={pointsToRedeem}
               onChange={(e) => setPointsToRedeem(parseInt(e.target.value) || 0)}
               placeholder="Enter points to redeem"
-              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-red-500 focus:border-red-500"
             />
             <button
               onClick={handleRedeem}
               disabled={redeeming || pointsToRedeem <= 0 || pointsToRedeem > rewardPoints.points}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
             >
               {redeeming ? 'Redeeming...' : 'Redeem'}
             </button>
@@ -198,7 +198,7 @@ export default function RewardPointsRedeem({
 
           {pointsToRedeem > 0 && (
             <div className="text-sm text-gray-600">
-              You&apos;ll get ₹{pointsToRedeem} discount
+              You&apos;ll get ?{pointsToRedeem} discount
             </div>
           )}
         </div>
@@ -216,3 +216,7 @@ export default function RewardPointsRedeem({
     </div>
   );
 }
+
+
+
+

@@ -95,7 +95,7 @@ export default function ReviewCard({
             {onEdit && (
               <button
                 onClick={onEdit}
-                className="p-1 text-gray-400 hover:text-blue-600 transition-colors"
+                className="p-1 text-gray-400 hover:text-black transition-colors"
                 title="Edit review"
               >
                 <Edit className="w-4 h-4" />
@@ -144,7 +144,7 @@ export default function ReviewCard({
             {review.images.length > 3 && !showAllImages && (
               <button
                 onClick={() => setShowAllImages(true)}
-                className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                className="text-sm text-gray-700 hover:text-black font-medium"
               >
                 Show all {review.images.length} photos
               </button>

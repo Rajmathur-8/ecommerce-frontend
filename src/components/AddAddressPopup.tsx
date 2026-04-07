@@ -375,7 +375,7 @@ export default function AddAddressPopup({ isOpen, onClose, onAddressAdded, initi
               <button
                 type="button"
                 onClick={() => setShowMap(!showMap)}
-                className="flex items-center gap-2 px-3 py-1.5 text-sm bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-colors"
+                className="flex items-center gap-2 px-3 py-1.5 text-sm bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors"
               >
                 <Globe className="w-4 h-4" />
                 {showMap ? 'Hide Map' : 'Use Map'}

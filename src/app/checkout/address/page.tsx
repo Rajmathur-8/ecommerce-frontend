@@ -340,7 +340,7 @@ export default function AddressPage() {
                                     e.stopPropagation();
                                     handleSetDefault(address._id);
                                   }}
-                                  className="p-2 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all duration-200 cursor-pointer"
+                                  className="p-2 text-gray-500 hover:text-black hover:bg-gray-100 rounded-lg transition-all duration-200 cursor-pointer"
                                   title="Set as default"
                                 >
                                   <MapPin className="w-4 h-4" />
@@ -351,7 +351,7 @@ export default function AddressPage() {
                                   e.stopPropagation();
                                   // Handle edit (you can implement edit functionality later)
                                 }}
-                                className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 cursor-pointer"
+                                className="p-2 text-gray-500 hover:text-black hover:bg-gray-100 rounded-lg transition-all duration-200 cursor-pointer"
                                 title="Edit address"
                               >
                                 <Edit className="w-4 h-4" />
@@ -373,7 +373,7 @@ export default function AddressPage() {
                       
                       <button
                         onClick={() => setShowAddPopup(true)}
-                        className="w-full p-6 border-2 border-dashed border-gray-300 rounded-xl text-gray-600 hover:border-indigo-400 hover:text-indigo-600 hover:bg-indigo-50 transition-all duration-200 flex items-center justify-center gap-3 group cursor-pointer"
+                        className="w-full p-6 border-2 border-dashed border-gray-300 rounded-xl text-gray-600 hover:border-gray-400 hover:text-black hover:bg-gray-50 transition-all duration-200 flex items-center justify-center gap-3 group cursor-pointer"
                       >
                         <Plus className="w-6 h-6 group-hover:scale-110 transition-transform" />
                         <span className="font-medium">Add New Address</span>

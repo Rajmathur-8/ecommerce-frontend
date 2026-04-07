@@ -116,7 +116,7 @@ export default function OTPPage() {
                     value={digit}
                     onChange={(e) => handleOtpChange(index, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(index, e)}
-                    className="w-12 h-12 text-center text-lg font-semibold border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-black"
+                    className="w-12 h-12 text-center text-lg font-semibold border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-black"
                     placeholder="0"
                   />
                 ))}
@@ -129,7 +129,7 @@ export default function OTPPage() {
                   <button
                     type="button"
                     onClick={handleResendOTP}
-                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                    className="font-medium text-gray-700 hover:text-black"
                   >
                     Resend
                   </button>
@@ -144,7 +144,7 @@ export default function OTPPage() {
               <button
                 type="submit"
                 disabled={loading || otp.join('').length !== 6}
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <div className="flex items-center">
@@ -160,7 +160,7 @@ export default function OTPPage() {
               </button>
             </div>
             <div className="text-center">
-              <Link href="/auth/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+              <Link href="/auth/login" className="font-medium text-gray-700 hover:text-black">
                 Back to login
               </Link>
             </div>
@@ -170,3 +170,4 @@ export default function OTPPage() {
     </div>
   );
 } 
+

@@ -6,6 +6,7 @@ import { Heart, ShoppingCart } from 'lucide-react';
 import { useAppContext } from '@/contexts/AppContext';
 import { useRouter } from 'next/navigation';
 import { formatCurrency } from '@/lib/config';
+import { useReduxCart } from '@/hooks/useReduxCart';
 
 interface ProductCardProps {
   id: string;
@@ -35,7 +36,8 @@ interface ProductCardProps {
 export default function ProductCard({ id, productName, price, discountPrice, images, stock, category, averageRating, totalReviews, isPreOrder, filterParams }: ProductCardProps) {
   const { wishlist, auth } = useAppContext();
   const [isWishlisted, setIsWishlisted] = useState(false);
-  const router=useRouter()
+  const router = useRouter();
+  const cart = useReduxCart();
   // Check wishlist status on mount and when wishlist changes
   useEffect(() => {
     setIsWishlisted(wishlist.isInWishlist(id));
@@ -60,6 +62,18 @@ export default function ProductCard({ id, productName, price, discountPrice, ima
     } catch (error) {
       console.error('Error toggling wishlist:', error);
     }
+  };
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (!auth.isAuthenticated) {
+      router.push('/auth/login');
+      return;
+    }
+
+    cart.addToCart(id, 1);
   };
 
   // Debug log for images
@@ -128,24 +142,43 @@ export default function ProductCard({ id, productName, price, discountPrice, ima
       <div className="p-3 space-y-1.5 flex flex-col h-full">
         {/* Category Badge */}
         <div className="inline-block">
-          <span className="text-xs font-semibold text-blue-700 bg-blue-100 px-2 py-0.5 rounded-full uppercase tracking-wide">
+          <span className="text-xs font-semibold text-red-700 bg-red-100 px-2 py-0.5 rounded-full uppercase tracking-wide">
             {category.name}
           </span>
         </div>
 
         {/* Product Name */}
         <Link href={getProductUrlWithFilters(id)}>
-          <h3 className="text-xs font-semibold text-gray-800 hover:text-blue-600 transition-colors line-clamp-2 leading-snug">
+          <h3 className="text-xs font-semibold text-gray-800 hover:text-black transition-colors line-clamp-2 leading-snug">
             {productName}
           </h3>
         </Link>
 
-        {/* Star Rating - Show as empty stars like reference */}
-        <div className="flex items-center gap-0.5 text-xs">
-          <span className="font-semibold text-yellow-500">★★★★★</span>
-          {totalReviews && totalReviews > 0 && (
-            <span className="text-gray-600 font-medium">{totalReviews}+</span>
+        {/* Star Rating - Show actual stars */}
+        <div className="flex items-center gap-1 text-xs">
+          <div className="flex gap-0.5">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span
+                key={star}
+                className={`text-lg ${
+                  averageRating && star <= Math.round(averageRating)
+                    ? 'text-yellow-400'
+                    : 'text-gray-300'
+                }`}
+              >
+                ★
+              </span>
+            ))}
+          </div>
+          {averageRating && (
+            <>
+              <span className="font-semibold text-gray-900">{averageRating.toFixed(1)}</span>
+              {totalReviews && totalReviews > 0 && (
+                <span className="text-gray-600">({totalReviews.toLocaleString()})</span>
+              )}
+            </>
           )}
+          {!averageRating && <span className="text-gray-500 text-xs">No ratings yet</span>}
         </div>
 
         {/* Price Section - Main layout change */}
@@ -194,7 +227,7 @@ export default function ProductCard({ id, productName, price, discountPrice, ima
 
             {/* Free Delivery */}
             <div className="text-xs text-gray-700 flex items-center gap-1">
-              <span className="font-bold">📦</span>
+              <span className="font-bold">🚚</span>
               <span className="font-medium">Free Delivery Available</span>
             </div>
           </div>
@@ -205,7 +238,7 @@ export default function ProductCard({ id, productName, price, discountPrice, ima
           <div className="pt-1.5 border-t border-gray-200 flex gap-1.5 mt-auto">
             <button 
               type="button"
-              onClick={() => router.push(getProductUrlWithFilters(id))}
+              onClick={handleAddToCart}
               className="flex-1 flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white text-xs font-semibold py-2 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
             >
               <ShoppingCart className="w-3.5 h-3.5" />
@@ -229,3 +262,4 @@ export default function ProductCard({ id, productName, price, discountPrice, ima
     </div>
   );
 } 
+

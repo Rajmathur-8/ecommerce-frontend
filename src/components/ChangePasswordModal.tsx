@@ -122,7 +122,7 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
                 name="currentPassword"
                 value={formData.currentPassword}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
                 placeholder="Enter current password"
                 required
               />
@@ -139,7 +139,7 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
                 name="newPassword"
                 value={formData.newPassword}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
                 placeholder="Enter new password"
                 required
               />
@@ -157,7 +157,7 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
                 placeholder="Confirm new password"
                 required
               />
@@ -200,3 +200,5 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
     </div>
   );
 }
+
+

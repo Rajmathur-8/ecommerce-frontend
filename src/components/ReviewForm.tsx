@@ -171,7 +171,7 @@ export default function ReviewForm({
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             maxLength={100}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
             placeholder="Summarize your experience"
           />
           <div className="flex justify-between items-center mt-1">
@@ -195,7 +195,7 @@ export default function ReviewForm({
             onChange={(e) => setComment(e.target.value)}
             maxLength={1000}
             rows={4}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
             placeholder="Share your detailed experience with this product..."
           />
           <div className="flex justify-between items-center mt-1">
@@ -219,7 +219,7 @@ export default function ReviewForm({
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-400 hover:bg-blue-50 transition-colors"
+                className="w-full border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-400 hover:bg-gray-50 transition-colors"
               >
                 <div className="flex flex-col items-center">
                   <Upload className="w-6 h-6 text-gray-400 mb-2" />
@@ -281,7 +281,7 @@ export default function ReviewForm({
           <button
             type="submit"
             disabled={loading}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
+            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
           >
             {loading ? (
               <>
@@ -300,3 +300,5 @@ export default function ReviewForm({
     </div>
   );
 } 
+
+

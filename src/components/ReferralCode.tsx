@@ -65,7 +65,7 @@ export default function ReferralCode({ isOpen, onClose }: ReferralCodeProps) {
   };
 
   const shareReferralCode = async () => {
-    const shareText = `Hey! Use my referral code ${referralCode} on Gupta Distributors and get 200 reward points on your first order! 🎉`;
+    const shareText = `Hey! Use my referral code ${referralCode} on Gupta Distributors and get 200 reward points on your first order! ??`;
     
     if (navigator.share) {
       try {
@@ -296,3 +296,5 @@ export default function ReferralCode({ isOpen, onClose }: ReferralCodeProps) {
     </div>
   );
 }
+
+

@@ -78,9 +78,9 @@ export default function TrackPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'order_placed': return 'text-blue-600 bg-blue-100';
+      case 'order_placed': return 'text-red-600 bg-red-100';
       case 'delivered': return 'text-green-600 bg-green-100';
-      case 'in_transit': return 'text-blue-600 bg-blue-100';
+      case 'in_transit': return 'text-red-600 bg-red-100';
       case 'out_for_delivery': return 'text-orange-600 bg-orange-100';
       case 'picked_up': return 'text-purple-600 bg-purple-100';
       case 'failed': return 'text-red-600 bg-red-100';
@@ -141,7 +141,7 @@ export default function TrackPage() {
                   value={trackingNumber}
                   onChange={(e) => setTrackingNumber(e.target.value)}
                   placeholder="Enter your tracking number"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500"
                 />
               </div>
             </div>
@@ -149,7 +149,7 @@ export default function TrackPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                className="w-full sm:w-auto px-6 py-3 bg-red-600 text-white rounded-md hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
               >
                 {loading ? 'Tracking...' : 'Track Package'}
               </button>
@@ -170,7 +170,7 @@ export default function TrackPage() {
             <div className="bg-white rounded-lg border border-gray-200 p-6">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center">
                     <Package className="w-5 h-5 text-white" />
                   </div>
                   <div>
@@ -196,7 +196,7 @@ export default function TrackPage() {
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div 
-                    className="bg-blue-600 h-2 rounded-full transition-all duration-500"
+                    className="bg-red-600 h-2 rounded-full transition-all duration-500"
                     style={{ width: `${trackingData.progressPercentage}%` }}
                   ></div>
                 </div>
@@ -227,8 +227,8 @@ export default function TrackPage() {
                 )}
 
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <Truck className="w-4 h-4 text-blue-600" />
+                  <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                    <Truck className="w-4 h-4 text-red-600" />
                   </div>
                   <div>
                     <p className="text-xs text-gray-500">Shipping Partner</p>
@@ -246,7 +246,7 @@ export default function TrackPage() {
                   <div key={index} className="flex items-start space-x-3">
                     <div className="flex-shrink-0">
                       <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                        index === 0 ? 'bg-blue-600' : 'bg-gray-200'
+                        index === 0 ? 'bg-red-600' : 'bg-gray-200'
                       }`}>
                         {index === 0 ? (
                           <CheckCircle className="w-3 h-3 text-white" />
@@ -283,7 +283,7 @@ export default function TrackPage() {
                   href={trackingData.partner.trackingUrl.replace('{tracking}', trackingData.trackingNumber)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm"
+                  className="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors text-sm"
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
                   Track on {trackingData.partner.displayName}
@@ -307,3 +307,5 @@ export default function TrackPage() {
     </div>
   );
 }
+
+

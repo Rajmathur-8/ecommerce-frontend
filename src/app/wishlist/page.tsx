@@ -27,7 +27,7 @@ export default function WishlistPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/auth/login"
-                className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                className="bg-gradient-to-r from-red-600 to-red-700 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-xl font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 transform hover:scale-105 shadow-lg"
               >
                 Login
               </Link>
@@ -65,7 +65,7 @@ export default function WishlistPage() {
             {validWishlistCount > 0 && (
               <Link
                 href="/products"
-                className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors font-medium flex items-center gap-2"
+                className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center gap-2"
               >
                 <ShoppingCart className="w-4 h-4" />
                 Continue Shopping
@@ -85,13 +85,13 @@ export default function WishlistPage() {
           <div className="bg-white rounded-lg shadow-sm p-8">
             <div className="text-center">
               <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">⚠️</span>
+                <span className="text-2xl">??</span>
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Error Loading Wishlist</h3>
               <p className="text-gray-600 mb-4">{wishlist.error}</p>
               <button
                 onClick={wishlist.fetchWishlist}
-                className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
               >
                 Try Again
               </button>
@@ -107,7 +107,7 @@ export default function WishlistPage() {
               <p className="text-gray-600 mb-6">Start adding products to your wishlist to save them for later!</p>
               <Link
                 href="/products"
-                className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors font-medium inline-flex items-center gap-2"
+                className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors font-medium inline-flex items-center gap-2"
               >
                 <ShoppingCart className="w-4 h-4" />
                 Browse Products
@@ -137,3 +137,5 @@ export default function WishlistPage() {
     </div>
   );
 }
+
+
