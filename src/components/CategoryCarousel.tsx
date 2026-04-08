@@ -1,197 +1,159 @@
-'use client';
+﻿'use client';
 
-import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useRef, useMemo, useState } from 'react';
+import Link from 'next/link';
+import { useCategories } from '@/hooks/useCategories';
 
 interface Category {
   _id: string;
   name: string;
   image?: string;
+  categoryImage?: string;
+  photo?: string;
 }
 
 // Default product images for categories
 const CATEGORY_PRODUCT_IMAGES: Record<string, string> = {
-  'TV': 'https://d2d22nphq0yz8t.cloudfront.net/88e6cc4b-eaa3-4748-9a64-c764a2179d76/https___cdn.shopify.com_s_files_1_0604_5298_2732_products_SSA_IMG_HERO_55_CU7700_2_1500x1500_crop_center.progressive.jpg?width=1500&height=1500&quality=96&crop=center',
-  'Laptops': 'https://m.media-amazon.com/images/I/71jG+e7roXL._SY450_.jpg',
-  'Mobile': 'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400',
-  'Tablets': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnvuj23Sj_yqZmWnw8hMmnLdjxoQiNQQHuCw&sauto=compress&cs=tinysrgb&w=400',
+  'TV': 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=400&h=300&fit=crop&q=80',
+  'Laptop': 'https://images.unsplash.com/photo-1588872657840-790ff3bde08c?w=400&h=300&fit=crop&q=80',
+  'Mobile': 'https://images.unsplash.com/photo-1511707267537-b85faf00021e?w=400&h=300&fit=crop&q=80',
+  'Tablet': 'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=400&h=300&fit=crop&q=80',
+  'Home & Kitchen': 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop&q=80',
+  'Wearables': 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop&q=80',
+  'Refrigerator': 'https://images.unsplash.com/photo-1630459065645-549fe5a56db4?w=400&h=300&fit=crop&q=80',
+  'Washing Machine': 'https://images.unsplash.com/photo-1585314293845-4db3b9d0c6e9?w=400&h=300&fit=crop&q=80',
+  'Oven': 'https://images.unsplash.com/photo-1574269909862-7e1d70bb8078?w=400&h=300&fit=crop&q=80',
+  'Water Purifier': 'https://stg-images.samsung.com/is/image/samsung/assets/global/hq/ha/home-appliances/faq-water-purifier/2025-faq-water-purifier-og.jpg',
+  'Air Conditioner': 'https://i-media.vyaparify.com/vcards/blogs/98193/Benefits_of_AC.jpg',
 };
 
-interface CategoryCarouselProps {
-  categories: Category[];
-  onCategoryClick: (categoryId: string) => void;
-  activeCategory: string | null;
-  loading?: boolean;
-}
-
-export default function CategoryCarousel({ 
-  categories, 
-  onCategoryClick, 
-  activeCategory, 
-  loading = false 
-}: CategoryCarouselProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-
-  // Auto-play functionality
-  useEffect(() => {
-    if (!isAutoPlaying || categories.length <= 6) return;
-
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % Math.ceil(categories.length / 6));
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [isAutoPlaying, categories.length]);
-
-  // Pause auto-play on hover
-  const handleMouseEnter = () => setIsAutoPlaying(false);
-  const handleMouseLeave = () => setIsAutoPlaying(true);
-
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % Math.ceil(categories.length / 6));
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + Math.ceil(categories.length / 6)) % Math.ceil(categories.length / 6));
-  };
-
-  const getVisibleCategories = () => {
-    const startIndex = currentIndex * 6;
-    return categories.slice(startIndex, startIndex + 6);
-  };
-
-  if (loading) {
-    return (
-      <div className="py-8 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center space-x-4">
-            {[...Array(6)].map((_, index) => (
-              <div key={index} className="animate-pulse">
-                <div className="w-16 h-16 bg-gray-200 rounded-full mb-2"></div>
-                <div className="w-12 h-3 bg-gray-200 rounded"></div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
+/**
+ * Looks up an image URL for a category name with:
+ * 1. Direct match
+ * 2. Case-insensitive match
+ * 3. Plural/singular normalization (e.g. "Laptops" → "Laptop", "Mobiles" → "Mobile")
+ */
+const getImageForCategory = (categoryName: string): string | null => {
+  // 1. Direct match
+  if (CATEGORY_PRODUCT_IMAGES[categoryName]) {
+    return CATEGORY_PRODUCT_IMAGES[categoryName];
   }
+
+  const lower = categoryName.toLowerCase().trim();
+
+  // 2. Case-insensitive + plural/singular normalization
+  const key = Object.keys(CATEGORY_PRODUCT_IMAGES).find((k) => {
+    const kLower = k.toLowerCase();
+    return (
+      kLower === lower ||
+      kLower === lower.replace(/s$/, '') || // "Laptops" → "Laptop"
+      kLower + 's' === lower                // "Laptop"  → "Laptops"
+    );
+  });
+
+  return key ? CATEGORY_PRODUCT_IMAGES[key] : null;
+};
+
+export default function CategoryNavBar() {
+  const { categories: allCategories } = useCategories();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
+
+  // ─── FIX: Deduplicate categories by name (case-insensitive) ───────────────
+  const categories = useMemo(() => {
+    const seen = new Set<string>();
+    return allCategories.filter((category) => {
+      const key = category.name.toLowerCase().trim();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [allCategories]);
+  // ──────────────────────────────────────────────────────────────────────────
+
+  const handleImageError = (categoryId: string) => {
+    setImageErrors((prev) => new Set(prev).add(categoryId));
+  };
+
+  const getImageUrl = (category: Category): string | null => {
+    // Always prefer hardcoded images (case-insensitive + plural normalization)
+    const hardcodedImage = getImageForCategory(category.name);
+    if (hardcodedImage) return hardcodedImage;
+
+    // Fall back to API image if no hardcoded image
+    const apiImage = category.image || category.categoryImage || category.photo;
+    return apiImage || null;
+  };
 
   if (categories.length === 0) {
     return null;
   }
 
-  const visibleCategories = getVisibleCategories();
-  const totalSlides = Math.ceil(categories.length / 6);
-
   return (
-    <section className="py-8 bg-red-50 border-t-4 border-red-500">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8 flex items-center gap-3">
-          <span className="inline-block bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">IMPORTANT</span>
-          <h2 className="text-2xl font-bold text-gray-900 text-left">Explore Category</h2>
-        </div>
-
-        <div 
-          className="relative"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+    <div className="bg-white border-b border-gray-200 sticky top-16 z-40">
+      <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div
+          ref={containerRef}
+          className="flex gap-4 overflow-x-auto scrollbar-hide"
         >
-          {/* Navigation Buttons */}
-          {totalSlides > 1 && (
-            <>
-              <button
-                onClick={prevSlide}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white border-2 border-gray-200 rounded-full p-3 shadow-lg hover:shadow-xl hover:border-red-500 transition-all duration-200 hover:scale-110"
-                aria-label="Previous categories"
-              >
-                <ChevronLeft className="w-6 h-6 text-gray-600" />
-              </button>
-              <button
-                onClick={nextSlide}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white border-2 border-gray-200 rounded-full p-3 shadow-lg hover:shadow-xl hover:border-red-500 transition-all duration-200 hover:scale-110"
-                aria-label="Next categories"
-              >
-                <ChevronRight className="w-6 h-6 text-gray-600" />
-              </button>
-            </>
-          )}
+          {categories.map((category: Category) => {
+            const imageUrl = getImageUrl(category);
+            const hasImageError = imageErrors.has(category._id);
 
-          {/* Categories Grid - Card Style */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 md:gap-6">
-            {visibleCategories.map((category) => (
-              <button
+            return (
+              <Link
                 key={category._id}
-                onClick={() => onCategoryClick(category._id)}
-                className="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden h-32 md:h-40 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                href={`/products?category=${category._id}`}
+                className="flex-shrink-0 flex items-center gap-2 sm:gap-3 group transition-all hover:scale-105 px-2 py-1"
               >
-                {/* Category Image Background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden">
-                  {category.image ? (
-                    <img 
-                      src={category.image} 
+                {/* Category Image - Compact */}
+                <div className="relative w-12 h-10 sm:w-14 sm:h-11 rounded-md overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center flex-shrink-0 shadow-sm hover:shadow-md transition-shadow border border-gray-200">
+                  {imageUrl && !hasImageError ? (
+                    <img
+                      src={imageUrl}
                       alt={category.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = CATEGORY_PRODUCT_IMAGES[category.name] || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&h=500&fit=crop';
-                      }}
-                    />
-                  ) : CATEGORY_PRODUCT_IMAGES[category.name] ? (
-                    <img 
-                      src={CATEGORY_PRODUCT_IMAGES[category.name]} 
-                      alt={category.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&h=500&fit=crop';
-                      }}
+                      className="w-full h-full object-cover"
+                      onError={() => handleImageError(category._id)}
+                      loading="lazy"
+                      crossOrigin="anonymous"
                     />
                   ) : (
-                    <div className="text-4xl">??</div>
+                    <svg
+                      className="w-5 h-5 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M20 7l-8-4-8 4m16 0l-8 4m0 0L4 7m8 4v10l8-4v-10L12 11m0 0L4 7"
+                      />
+                    </svg>
                   )}
                 </div>
 
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-
-                {/* Category Name with Gradient Background */}
-                <div className="absolute inset-0 flex items-end justify-center pb-3 bg-gradient-to-t from-black/60 via-transparent to-transparent">
-                  <h3 className="text-white text-sm md:text-base font-bold text-center px-2">
-                    {category.name}
-                  </h3>
-                </div>
-
-                {/* Active Indicator Border */}
-                {activeCategory === category._id && (
-                  <div className="absolute inset-0 border-2 border-red-500 rounded-xl"></div>
-                )}
-              </button>
-            ))}
-          </div>
-
-          {/* Dots Indicator */}
-          {totalSlides > 1 && (
-            <div className="flex justify-center mt-8 space-x-3">
-              {[...Array(totalSlides)].map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className={`h-3 rounded-full transition-all duration-300 hover:scale-125
-                    ${currentIndex === index 
-                      ? 'bg-gradient-to-r from-red-500 to-red-600 w-8 shadow-md' 
-                      : 'bg-gray-300 hover:bg-gray-400 w-3'
-                    }`}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
-              ))}
-            </div>
-          )}
+                {/* Category Name - Inline */}
+                <span className="text-xs sm:text-sm font-semibold text-gray-800 whitespace-nowrap group-hover:text-red-600 transition-colors">
+                  {category.name}
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </div>
-    </section>
+
+      {/* Custom scrollbar styling */}
+      <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
+    </div>
   );
 }
-
-

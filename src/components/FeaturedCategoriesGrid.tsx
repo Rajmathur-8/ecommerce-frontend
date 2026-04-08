@@ -21,11 +21,14 @@ const CATEGORY_PRODUCT_IMAGES: Record<string, string> = {
   'TV': 'https://d2d22nphq0yz8t.cloudfront.net/88e6cc4b-eaa3-4748-9a64-c764a2179d76/https___cdn.shopify.com_s_files_1_0604_5298_2732_products_SSA_IMG_HERO_55_CU7700_2_1500x1500_crop_center.progressive.jpg?width=1500&height=1500&quality=96&crop=center',
   'Laptops': 'https://m.media-amazon.com/images/I/71jG+e7roXL._SY450_.jpg',
   'Mobile': 'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400',
-  'Mobiles': 'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400',
   'Tablets': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnvuj23Sj_yqZmWnw8hMmnLdjxoQiNQQHuCw&s=compress&cs=tinysrgb&w=400',
-  'Air Conditioner': 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=500&h=500&fit=crop',
-  'Washing Machine': 'https://images.unsplash.com/photo-1584622281867-8f270c1c2e7f?w=500&h=500&fit=crop',
-  'Refrigerator': 'https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?w=500&h=500&fit=crop',
+  'Home & Kitchen': 'https://numalis.com/wp-content/uploads/2023/10/Maxx-Studio-Shutterstock.jpg',
+  'Wearables': 'https://images.unsplash.com/photo-1575125069494-6a0c5819d340?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8d2VhcmFibGVzfGVufDB8fDB8fHww',
+  'Air Conditioner': 'https://i-media.vyaparify.com/vcards/blogs/98193/Benefits_of_AC.jpg',
+  'Washing Machine': 'https://media-ik.croma.com/prod/https://media.tatacroma.com/Croma%20Assets/Large%20Appliances/Washers%20and%20Dryers/Images/308169_nhjiel.png',
+  'Refrigerator': 'https://images.unsplash.com/photo-1630459065645-549fe5a56db4?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cmVmcmlnZXJhdG9yfGVufDB8fDB8fHww',
+  'Oven': 'https://img.freepik.com/free-vector/microwave-oven-with-light-inside-isolated-white-background-kitchen-appliances_134830-658.jpg?semt=ais_hybrid&w=740&q=80',
+  'Water Purifier': 'https://stg-images.samsung.com/is/image/samsung/assets/global/hq/ha/home-appliances/faq-water-purifier/2025-faq-water-purifier-og.jpg',
 };
 
 const FeaturedCategoriesGrid: React.FC<FeaturedCategoriesGridProps> = ({ 
@@ -39,7 +42,7 @@ const FeaturedCategoriesGrid: React.FC<FeaturedCategoriesGridProps> = ({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-8">Explore Category</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[...Array(4)].map((_, i) => (
+            {[...Array(6)].map((_, i) => (
               <div
                 key={i}
                 className="bg-gray-200 rounded-lg h-48 animate-pulse"
@@ -51,8 +54,8 @@ const FeaturedCategoriesGrid: React.FC<FeaturedCategoriesGridProps> = ({
     );
   }
 
-  // Get top 4 categories
-  const featured = categories.slice(0, 4);
+  // Get all categories
+  const featured = categories;
 
   if (featured.length === 0) {
     return null;
@@ -76,12 +79,12 @@ const FeaturedCategoriesGrid: React.FC<FeaturedCategoriesGridProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">Explore Category</h2>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 gap-2 sm:gap-3">
           {featured.map((category) => (
             <button
               key={category._id}
               onClick={() => onCategoryClick?.(category._id)}
-              className="group relative bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden h-48 sm:h-52"
+              className="group relative bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden h-32 sm:h-36 md:h-40"
             >
               {/* Category Image */}
               <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden">

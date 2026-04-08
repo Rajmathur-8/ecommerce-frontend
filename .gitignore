@@ -46,3 +46,5 @@ bun.lock
 .env
 .env.*
 !.env.example
+
+.ps1
